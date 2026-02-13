@@ -1,188 +1,127 @@
-# Sven Neurath Portfolio - Astro
+# Sven Neurath Portfolio
 
-Dein Portfolio, jetzt mit Astro. Blog-Support, Projekt-Seiten, saubere Struktur.
+> Persönliche Portfolio-Website mit Blog – IT Systemintegration, Homelab & Game Development
 
-## 📁 Projektstruktur
+🔗 **Live:** [sven-neurath.de](https://sven-neurath.de)
 
-```
-astro-portfolio/
-├── astro.config.mjs          ← Astro-Konfiguration
-├── package.json               ← Dependencies (nur Astro!)
-├── tsconfig.json
-├── public/                    ← Statische Dateien (werden 1:1 kopiert)
-│   ├── fonts/                 ← Deine Fonts (Inter, JetBrains Mono)
-│   │   └── fonts.css
-│   ├── img/                   ← Bilder (avatar.png etc.)
-│   ├── scripts/
-│   │   ├── theme.js           ← Theme/Language Toggle
-│   │   ├── main.js            ← Parallax, Scroll, Card Tilt
-│   │   ├── livestats.js       ← stats.json Fetch
-│   │   └── snake.js           ← Snake AI Game
-│   ├── styles/
-│   │   └── global.css         ← Dein bestehendes CSS (1:1)
-│   └── stats.json             ← Live-Daten vom Server
-└── src/
-    ├── layouts/
-    │   ├── BaseLayout.astro   ← HTML-Grundgerüst (head, body)
-    │   ├── PortfolioLayout.astro ← Hauptseite (Nav, BG-FX, Footer)
-    │   ├── PageLayout.astro   ← Unterseiten (Impressum, Datenschutz)
-    │   └── BlogPost.astro     ← Blog-Post Template (Markdown → HTML)
-    ├── components/
-    │   ├── Nav.astro           ← Navigation (einmal definiert!)
-    │   └── Footer.astro        ← Footer (einmal definiert!)
-    └── pages/
-        ├── index.astro         ← Hauptseite
-        ├── blog.astro          ← Blog-Übersicht
-        ├── impressum.astro     ← Impressum
-        ├── datenschutz.astro   ← Datenschutz
-        └── blog/
-            ├── live-homelab-daten.md  ← Beispiel-Post 1
-            └── von-html-zu-astro.md   ← Beispiel-Post 2
-```
+---
 
-## 🚀 Setup (auf deinem Rechner oder Server)
+## 🚀 Über das Projekt
 
-### 1. Node.js installieren (falls nicht vorhanden)
+Diese Website ist mein digitales Zuhause – gebaut mit [Astro](https://astro.build/), gehostet auf meinem eigenen Server. 
+
+Hier zeige ich:
+- 🖥️ Mein **Homelab-Setup** (Unraid, Docker, 24/7 Infrastructure)
+- 🎮 **GameDev-Projekte** (Godot 4.6, GDScript)
+- 📝 **Blog-Posts** über Technik, Self-Hosting und meinen Weg in die IT
+
+---
+
+## 🛠️ Tech Stack
+
+| Kategorie | Technologie |
+|-----------|-------------|
+| Framework | [Astro](https://astro.build/) 5.x |
+| Sprache | TypeScript |
+| Styling | Vanilla CSS (kein Framework) |
+| Fonts | Lokal gehostet (Inter, JetBrains Mono) |
+| Hosting | Netcup (selbstgehostet) |
+| CI/CD | Manuelles Deployment |
+
+---
+
+## 📋 Features & Roadmap
+
+### ✅ Implementiert
+- [x] Portfolio mit Homelab-Showcase
+- [x] Blog mit Markdown-Unterstützung
+- [x] Bilinguale Inhalte (DE/EN Toggle)
+- [x] Live-Homelab-Statistiken (via manifest.json)
+- [x] Interaktive AI-Snake Demo
+- [x] Dark Theme only (keine helle Seite! 🖤)
+
+### 🚧 In Arbeit
+- [ ] Content Collections für typsichere Blog-Posts
+- [ ] View Transitions für flüssige Seitenwechsel
+- [ ] RSS Feed
+- [ ] SEO-Optimierung (Sitemap, Meta-Tags)
+- [ ] Performance (Bildoptimierung, Font Loading)
+
+### 📌 Geplant
+- [ ] TinaCMS Integration (WYSIWYG Blog-Editor)
+- [ ] Mehr Blog-Posts (Werdegang historysieren)
+- [ ] Tag-Filter für Blog
+
+Siehe [FEATURES.md](./FEATURES.md) für die komplette Ideen-Sammlung.
+
+---
+
+## 🏃‍♂️ Quick Start
 
 ```bash
-# Check ob Node da ist
-node --version    # Braucht mindestens v18
-
-# Falls nicht: https://nodejs.org/ (LTS Version)
-```
-
-### 2. Projekt einrichten
-
-```bash
-# In den Projektordner wechseln
-cd astro-portfolio
-
-# Dependencies installieren
+# 1. Dependencies installieren
 npm install
 
-# Dev-Server starten (mit Hot-Reload)
+# 2. Dev-Server starten
 npm run dev
-```
+# → http://localhost:4321
 
-Die Seite läuft jetzt auf `http://localhost:4321`
-
-### 3. Deine Dateien reinkopieren
-
-**WICHTIG - Diese Dateien musst du noch manuell kopieren:**
-
-```bash
-# Deine Fonts
-cp -r /pfad/zu/deinen/fonts/* public/fonts/
-
-# Dein Avatar und Bilder
-cp /pfad/zu/deinen/img/* public/img/
-
-# Dein Snake-Code (den kompletten JS-Code)
-# → In public/scripts/snake.js einfügen
-
-# Deine stats.json (wird eh per n8n aktualisiert)
-# → Liegt schon als Platzhalter in public/stats.json
-```
-
-### 4. Für Produktion bauen
-
-```bash
-# Build erstellen
+# 3. Produktions-Build
 npm run build
-
-# Output liegt in dist/ - das sind pure HTML-Dateien
-# Diesen Ordner auf deinen Netcup-Server hochladen
+# → Output in dist/
 ```
 
-### 5. Preview (optional)
+---
 
-```bash
-# Gebaute Version lokal testen
-npm run preview
+## 📁 Wichtige Dateien
+
+```
+astro.config.mjs     # Astro-Konfiguration
+public/manifest.json # Live-Homelab-Daten (n8n aktualisiert)
+src/pages/blog/      # Blog-Posts (Markdown)
+src/layouts/         # Astro Layouts
+public/scripts/      # Client-Side JS (Theme, Snake, etc.)
 ```
 
-## ✍️ Neuen Blog-Post schreiben
+---
 
-So einfach geht's:
+## 📝 Blog schreiben
 
-### 1. Neue Markdown-Datei erstellen
-
-```bash
-# Datei anlegen
-touch src/pages/blog/mein-neuer-post.md
-```
-
-### 2. Frontmatter + Content schreiben
+Neuer Post in `src/pages/blog/dein-post.md`:
 
 ```markdown
 ---
 layout: ../../layouts/BlogPost.astro
-title: "Mein neuer Post"
-description: "Kurzbeschreibung für die Blog-Übersicht"
-date: "2026-02-15"
-tags: ["Homelab", "Docker", "Tutorial"]
+title: "Titel"
+description: "Kurzbeschreibung"
+date: "2026-02-13"
+tags: ["Homelab", "Docker"]
 ---
 
-## Überschrift
-
-Hier kommt dein Text. Normales Markdown.
-
-### Code-Blöcke funktionieren
-
-\`\`\`bash
-docker ps
-\`\`\`
-
-### Bilder auch
-
-![Beschreibung](/img/mein-bild.png)
-
-### Links
-
-[Mein GitHub](https://github.com/DarkSoon)
+Hier kommt der Inhalt...
 ```
 
-### 3. Fertig!
+---
 
-Der Post erscheint automatisch auf `/blog` und hat seine eigene Seite unter `/blog/mein-neuer-post`.
+## 🔒 Datenschutz & Legal
 
-## 💡 Blog-Post Ideen
+- **Keine Cookies** 🍪❌
+- **Keine externen Tracker**
+- **Keine Google Fonts** (alles lokal)
+- [Impressum](https://sven-neurath.de/impressum)
+- [Datenschutz](https://sven-neurath.de/datenschutz)
 
-Basierend auf deinem Setup:
+---
 
-- ✅ "Live-Daten vom Homelab auf die Website" (schon angelegt!)
-- ✅ "Von statischem HTML zu Astro" (schon angelegt!)
-- 📝 "VLAN-Segmentierung im Heimnetzwerk"
-- 📝 "Docker-Container richtig absichern"
-- 📝 "n8n Workflows für Server-Monitoring"
-- 📝 "VaultWarden self-hosten: Setup & Backup"
-- 📝 "Nextcloud vs. Google Drive: 1 Jahr Self-Hosting"
-- 📝 "Mein erster Godot-Prototyp: Lessons Learned"
-- 📝 "Reverse Proxy mit Nginx: Basics für Anfänger"
+## 👤 Über mich
 
-## 🔧 Für Kimi / AI-Assistenten
+**Sven Neurath** – 44, dreifacher Familienvater, auf dem Weg in die IT Systemintegration.
 
-Falls du Kimi Code nutzen willst um Änderungen zu machen:
+- 🔧 10+ Jahre Linux & Self-Hosting
+- 🏠 24/7 Homelab (Unraid, Docker, WireGuard)
+- 🎮 GameDev-Hobbyist (Godot)
+- 🌐 [GitHub](https://github.com/DarkSoon) | [Website](https://sven-neurath.de)
 
-**Neuen Blog-Post erstellen:**
-> "Erstelle einen neuen Blog-Post in src/pages/blog/[name].md mit dem Layout ../../layouts/BlogPost.astro. Frontmatter braucht: title, description, date, tags."
+---
 
-**Neue Seite erstellen:**
-> "Erstelle eine neue Astro-Seite in src/pages/[name].astro die das PageLayout importiert."
-
-**Component ändern:**
-> "Ändere die Navigation in src/components/Nav.astro - füge einen Link zu /projekte hinzu."
-
-## ⚡ Deployment auf Netcup
-
-```bash
-# 1. Bauen
-npm run build
-
-# 2. dist/ Ordner auf Server kopieren (z.B. per rsync)
-rsync -avz dist/ user@server:/var/www/sven-neurath.de/
-
-# Oder per SFTP/FTP den Inhalt von dist/ hochladen
-```
-
-Der Output in `dist/` ist pures HTML/CSS/JS - genau wie vorher. Kein Node.js auf dem Server nötig.
+> Built with 🖤 and Astro
