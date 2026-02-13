@@ -1,0 +1,24 @@
+---
+// src/components/Nav.astro
+---
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="/" class="nav-logo">
+            <img src="/img/avatar.png" alt="SN" class="nav-avatar-img">
+        </a>
+        <div class="nav-links">
+            <a href="/#about" class="nav-link" data-de="Über mich" data-en="About">Über mich</a>
+            <a href="/#homelab" class="nav-link" data-de="Homelab" data-en="Homelab">Homelab</a>
+            <a href="/#gamedev" class="nav-link" data-de="GameDev" data-en="GameDev">GameDev</a>
+            <a href="/blog" class="nav-link">Blog</a>
+            <a href="/#contact" class="nav-link" data-de="Kontakt" data-en="Contact">Kontakt</a>
+        </div>
+        <div class="nav-controls">
+            <button id="lang-toggle" class="nav-btn" aria-label="Toggle language">
+                <span class="lang-icon">🌐</span>
+                <span class="lang-text">DE</span>
+            </button>
+        </div>
+    </div>
+</nav>

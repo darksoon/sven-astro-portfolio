@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="de" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Sven Neurath - IT Systemintegration | Homelab, Docker, Linux &#38; Game Development"><title>SNAKE_AI // NEURATH.SYS</title><link rel="icon" type="image/x-icon" href="/img/avatar.png"><link href="/fonts/fonts.css" rel="stylesheet"><link rel="stylesheet" href="/styles/global.css"><link rel="stylesheet" href="/_astro/snake.DTkc9fWu.css"></head> <body>  <div class="page" data-astro-cid-pvafdirh> <div class="top-bar" data-astro-cid-pvafdirh> <a href="/" class="back-btn" data-astro-cid-pvafdirh>← BACK</a> <span class="page-brand" data-astro-cid-pvafdirh>NEURATH.SYS</span> </div> <div class="crt-housing" data-astro-cid-pvafdirh> <div class="crt-inner" data-astro-cid-pvafdirh> <div class="crt-screen" id="crtScreen" data-astro-cid-pvafdirh> <div class="crt-scanbeam" data-astro-cid-pvafdirh></div> <div class="t-header" data-astro-cid-pvafdirh> <div class="t-title" data-astro-cid-pvafdirh><span class="t-name" data-astro-cid-pvafdirh>SNAKE_AI</span><span class="t-ver" data-astro-cid-pvafdirh>v2.7.1</span></div> <div class="t-dots" data-astro-cid-pvafdirh><div class="t-dot r" data-astro-cid-pvafdirh></div><div class="t-dot y" data-astro-cid-pvafdirh></div><div class="t-dot g" data-astro-cid-pvafdirh></div></div> </div> <div class="t-status" data-astro-cid-pvafdirh> <div class="s-group" data-astro-cid-pvafdirh> <div class="s-item" data-astro-cid-pvafdirh>SCORE:<span class="v" id="score" data-astro-cid-pvafdirh>0</span></div> <div class="s-item hi" data-astro-cid-pvafdirh>BEST:<span class="v" id="hiScore" data-astro-cid-pvafdirh>0</span></div> <div class="s-item ln" data-astro-cid-pvafdirh>LEN:<span class="v" id="lenVal" data-astro-cid-pvafdirh>3</span></div> </div> <div class="s-item" data-astro-cid-pvafdirh>TICK:<span class="v" id="tickVal" data-astro-cid-pvafdirh>0</span></div> </div> <div class="c-wrap" data-astro-cid-pvafdirh> <canvas id="snakeCanvas" data-astro-cid-pvafdirh></canvas> <div class="death" id="deathOverlay" data-astro-cid-pvafdirh> <div class="death-t" data-astro-cid-pvafdirh>TERMINATED</div> <div class="death-s" data-astro-cid-pvafdirh>REBOOTING NEURAL CORE...</div> </div> </div> <div class="t-footer" data-astro-cid-pvafdirh> <div class="ai-ind" data-astro-cid-pvafdirh><div class="ai-dot" data-astro-cid-pvafdirh></div>NEURAL NET ACTIVE</div> <div class="sys" id="sysInfo" data-astro-cid-pvafdirh>PID:7741 MEM:OK</div> </div> </div> </div> <div class="h-bottom" data-astro-cid-pvafdirh> <div class="leds" data-astro-cid-pvafdirh><div class="l lg" data-astro-cid-pvafdirh></div><div class="l lc" data-astro-cid-pvafdirh></div><div class="l lm" data-astro-cid-pvafdirh></div><div class="l lg" data-astro-cid-pvafdirh></div></div> <div class="bm" data-astro-cid-pvafdirh>NEURATH.SYS</div> <div class="leds" data-astro-cid-pvafdirh><div class="l lm" data-astro-cid-pvafdirh></div><div class="l lg" data-astro-cid-pvafdirh></div><div class="l lc" data-astro-cid-pvafdirh></div><div class="l lg" data-astro-cid-pvafdirh></div></div> </div> </div> </div> <script>
+    (function(){
+      var G=28,SPD=70,RD=1800;
+      var c=document.getElementById('snakeCanvas');if(!c)return;
+      var x=c.getContext('2d');
+      var sE=document.getElementById('score'),hE=document.getElementById('hiScore');
+      var lE=document.getElementById('lenVal'),tE=document.getElementById('tickVal');
+      var yE=document.getElementById('sysInfo'),scr=document.getElementById('crtScreen');
+      var dO=document.getElementById('deathOverlay');
+      var sn,dr,fd,sc,hi=0,cl,lp,tk=0,pts=[],tr=[];
+
+      function rs(){
+        var w=c.parentElement,ww=w.clientWidth||w.offsetWidth,hh=w.clientHeight||w.offsetHeight;
+        if(ww<20||hh<20)return;c.width=ww;c.height=hh;cl=Math.min(ww,hh)/G;
+      }
+      function init(){
+        rs();var m=Math.floor(G/2);
+        sn=[{x:m,y:m},{x:m-1,y:m},{x:m-2,y:m}];dr={x:1,y:0};sc=0;tk=0;pts=[];tr=[];
+        if(sE)sE.textContent='0';if(lE)lE.textContent='3';if(tE)tE.textContent='0';
+        if(dO)dO.classList.remove('on');pf();
+      }
+      function pf(){
+        var p;do{p={x:Math.floor(Math.random()*G),y:Math.floor(Math.random()*G)};}
+        while(sn.some(function(s){return s.x===p.x&&s.y===p.y;}));fd=p;
+      }
+      function ai(){
+        var h=sn[0],mv=[{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}];
+        var vl=mv.filter(function(m){return!(m.x===-dr.x&&m.y===-dr.y);});
+        function sf(m){var nx=h.x+m.x,ny=h.y+m.y;if(nx<0||nx>=G||ny<0||ny>=G)return false;
+          for(var i=0;i<sn.length-1;i++)if(sn[i].x===nx&&sn[i].y===ny)return false;return true;}
+        function fl(sx,sy){
+          var vs=new Set(),q=[{x:sx,y:sy}],ct=0,mx=Math.floor(G*G*0.5);vs.add(sx+','+sy);
+          while(q.length&&ct<mx){var cu=q.shift();ct++;
+            for(var di=0;di<mv.length;di++){var d=mv[di],nx=cu.x+d.x,ny=cu.y+d.y,k=nx+','+ny;
+              if(nx>=0&&nx<G&&ny>=0&&ny<G&&!vs.has(k)&&!sn.some(function(s,i){return i<sn.length-1&&s.x===nx&&s.y===ny;}))
+                {vs.add(k);q.push({x:nx,y:ny});}}}return ct;}
+        var sm=vl.filter(function(m){return sf(m);});if(!sm.length)return dr;
+        var b=sm[0],bs=-Infinity;
+        for(var i=0;i<sm.length;i++){var m=sm[i],nx=h.x+m.x,ny=h.y+m.y;
+          var ds=Math.abs(nx-fd.x)+Math.abs(ny-fd.y),sp=fl(nx,ny);
+          var s=sp>=sn.length+2?1000-ds:sp;if(s>bs){bs=s;b=m;}}return b;
+      }
+      function spn(px,py,co,n){n=n||10;for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=1+Math.random()*3;
+        pts.push({x:(px+0.5)*cl,y:(py+0.5)*cl,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,sz:1+Math.random()*3,co:co});}}
+      function up(){for(var i=pts.length-1;i>=0;i--){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vx*=0.96;p.vy*=0.96;p.life-=0.03;if(p.life<=0)pts.splice(i,1);}}
+      function dp(){for(var i=0;i<pts.length;i++){var p=pts[i];x.globalAlpha=p.life*0.8;x.fillStyle=p.co;x.shadowColor=p.co;x.shadowBlur=8;
+        x.fillRect(p.x-p.sz/2,p.y-p.sz/2,p.sz,p.sz);}x.globalAlpha=1;x.shadowBlur=0;}
+
+      function upd(){
+        if(!cl||cl<1){rs();if(!cl||cl<1)return;}
+        dr=ai();var hd={x:sn[0].x+dr.x,y:sn[0].y+dr.y};tk++;if(tE)tE.textContent=tk;
+        if(hd.x<0||hd.x>=G||hd.y<0||hd.y>=G||sn.some(function(s){return s.x===hd.x&&s.y===hd.y;})){die();return;}
+        tr.push({x:sn[0].x,y:sn[0].y,life:1});sn.unshift(hd);
+        if(hd.x===fd.x&&hd.y===fd.y){sc+=10;if(sE)sE.textContent=sc;if(sc>hi){hi=sc;if(hE)hE.textContent=hi;}
+          if(lE)lE.textContent=sn.length;spn(fd.x,fd.y,'#00ff88',12);spn(fd.x,fd.y,'#00d9ff',6);pf();}
+        else{sn.pop();}
+        if(tk%20===0&&yE){yE.textContent='PID:'+(7700+Math.floor(Math.random()*100))+' MEM:'+(12+Math.random()*8).toFixed(1)+'MB';}
+      }
+      function die(){
+        clearInterval(lp);if(scr)scr.classList.add('glitch');if(dO)dO.classList.add('on');
+        setTimeout(function(){if(scr)scr.classList.remove('glitch');},300);
+        for(var i=0;i<sn.length;i++)if(Math.random()<0.5)spn(sn[i].x,sn[i].y,'#ff00aa',4);
+        setTimeout(function(){init();go();},RD);
+      }
+      function draw(){
+        if(!c.width||c.width<20)return;x.clearRect(0,0,c.width,c.height);
+        x.strokeStyle='rgba(0,255,136,0.025)';x.lineWidth=0.5;
+        for(var i=0;i<=G;i++){x.beginPath();x.moveTo(i*cl,0);x.lineTo(i*cl,c.height);x.stroke();
+          x.beginPath();x.moveTo(0,i*cl);x.lineTo(c.width,i*cl);x.stroke();}
+        for(var i=tr.length-1;i>=0;i--){var t=tr[i];t.life-=0.025;if(t.life<=0){tr.splice(i,1);continue;}
+          x.fillStyle='rgba(0,255,136,'+(t.life*0.08)+')';x.fillRect(t.x*cl,t.y*cl,cl,cl);}
+        for(var i=sn.length-1;i>=0;i--){var s=sn[i],pg=1-i/sn.length,pd=1;
+          if(i===0){x.fillStyle='#00ffcc';x.shadowColor='#00d9ff';x.shadowBlur=14;}
+          else{x.fillStyle='rgb('+Math.floor(pg*10)+','+Math.floor(120+pg*135)+','+Math.floor(60+pg*40)+')';
+            x.shadowColor='rgba(0,255,136,'+(0.05+pg*0.2)+')';x.shadowBlur=6;}
+          x.fillRect(s.x*cl+pd,s.y*cl+pd,cl-pd*2,cl-pd*2);
+          if(i===0){x.shadowBlur=0;x.fillStyle='rgba(0,0,0,0.3)';var es=Math.max(2,cl*0.22);
+            if(dr.x===1){x.fillRect(s.x*cl+cl*0.6,s.y*cl+cl*0.2,es,es);x.fillRect(s.x*cl+cl*0.6,s.y*cl+cl*0.62,es,es);}
+            else if(dr.x===-1){x.fillRect(s.x*cl+cl*0.18,s.y*cl+cl*0.2,es,es);x.fillRect(s.x*cl+cl*0.18,s.y*cl+cl*0.62,es,es);}
+            else if(dr.y===-1){x.fillRect(s.x*cl+cl*0.2,s.y*cl+cl*0.18,es,es);x.fillRect(s.x*cl+cl*0.62,s.y*cl+cl*0.18,es,es);}
+            else{x.fillRect(s.x*cl+cl*0.2,s.y*cl+cl*0.6,es,es);x.fillRect(s.x*cl+cl*0.62,s.y*cl+cl*0.6,es,es);}}}
+        x.shadowBlur=0;
+        var pu=0.7+Math.sin(Date.now()*0.006)*0.3,fp=2;
+        x.fillStyle='rgba(255,0,170,'+(pu*0.15)+')';x.fillRect(fd.x*cl-2,fd.y*cl-2,cl+4,cl+4);
+        x.fillStyle='rgba(255,0,170,'+pu+')';x.shadowColor='#ff00aa';x.shadowBlur=16;
+        x.fillRect(fd.x*cl+fp,fd.y*cl+fp,cl-fp*2,cl-fp*2);
+        x.fillStyle='rgba(255,150,220,'+(pu*0.5)+')';x.shadowBlur=0;var ip=cl*0.3;
+        x.fillRect(fd.x*cl+ip,fd.y*cl+ip,cl-ip*2,cl-ip*2);
+        x.strokeStyle='rgba(255,0,170,'+(pu*0.3)+')';x.lineWidth=0.5;
+        var cx2=fd.x*cl+cl/2,cy2=fd.y*cl+cl/2;
+        x.beginPath();x.moveTo(cx2,fd.y*cl-4);x.lineTo(cx2,fd.y*cl+cl+4);
+        x.moveTo(fd.x*cl-4,cy2);x.lineTo(fd.x*cl+cl+4,cy2);x.stroke();
+        up();dp();
+      }
+      function go(){clearInterval(lp);lp=setInterval(upd,SPD);}
+      function rl(){draw();requestAnimationFrame(rl);}
+      window.addEventListener('resize',function(){rs();});
+      if(typeof ResizeObserver!=='undefined'){try{new ResizeObserver(function(){rs();}).observe(c.parentElement);}catch(e){}}
+      setTimeout(function(){init();go();rl();},100);
+    })();
+    </script>  <script src="/scripts/theme.js"></script> </body> </html>  

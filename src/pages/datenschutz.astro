@@ -1,0 +1,114 @@
+---
+// src/pages/datenschutz.astro
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout title="Datenschutz | Sven Neurath">
+    <h1>Datenschutzerklärung</h1>
+    
+    <div class="highlight-box">
+        <p><strong>Kurzversion:</strong> Ich sammle keine personenbezogenen Daten. Die Seite speichert nur lokal auf deinem Gerät, welche Sprache und welches Theme du bevorzugst (damit du es nicht jedes Mal neu einstellen musst). Alle Schriftarten werden lokal gehostet - keine Verbindung zu Google Fonts.</p>
+    </div>
+    
+    <h2>1. Verantwortlicher</h2>
+    <p>Sven Neurath<br>
+    Steinmühlenweg 17<br>
+    38173 Erkerode<br>
+    E-Mail: <a href="mailto:info@sven-neurath.de">info@sven-neurath.de</a></p>
+    
+    <h2>2. Hosting</h2>
+    <p>Diese Website wird bei <strong>Netcup</strong> gehostet. Beim Aufrufen der Seite werden technisch bedingt Server-Logs erstellt (IP-Adresse, Zeitstempel, aufgerufene Seite). Diese Daten werden nur zur Fehlerbehebung genutzt und nicht mit anderen Datenquellen zusammengeführt.</p>
+    
+    <h2>3. Welche Daten werden gespeichert?</h2>
+    
+    <h3>Lokale Speicherung (LocalStorage)</h3>
+    <p>Im LocalStorage deines Browsers werden folgende Einstellungen gespeichert:</p>
+    <ul>
+        <li><strong>Sprache</strong> (de/en) - damit die Seite bei deinem nächsten Besuch auf Deutsch oder Englisch angezeigt wird</li>
+        <li><strong>Theme</strong> (dark/light) - damit deine bevorzugte Farbeinstellung erhalten bleibt</li>
+    </ul>
+    <p>Diese Daten verlassen <strong>niemals</strong> deinen Browser und werden nicht an mich oder Dritte übermittelt.</p>
+    
+    <h3>Cookies</h3>
+    <p>Diese Website verwendet <strong>keine Cookies</strong>.</p>
+    
+    <h2>4. Externe Dienste</h2>
+    
+    <h3>YouTube (externer Link)</h3>
+    <p>Auf der Seite befindet sich ein Link zu einem YouTube-Video (Server Tour). Erst wenn du den Link anklickst, wirst du zu YouTube weitergeleitet. Dabei wird eine Verbindung zu YouTube hergestellt und deine IP-Adresse an YouTube übermittelt. Beim normalen Aufrufen meiner Seite findet keine Datenübertragung an YouTube statt. Mehr Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">YouTube Datenschutzerklärung</a></p>
+    
+    <p><strong>Hinweis:</strong> Alle Schriftarten werden lokal von diesem Server geladen. Es findet keine Verbindung zu Google Fonts statt.</p>
+    
+    <h2>5. Deine Rechte</h2>
+    <p>Du hast das Recht auf:</p>
+    <ul>
+        <li>Auskunft über gespeicherte Daten</li>
+        <li>Berichtigung falscher Daten</li>
+        <li>Löschung deiner Daten</li>
+        <li>Einschränkung der Verarbeitung</li>
+        <li>Datenübertragbarkeit</li>
+    </ul>
+    <p>Da ich keine personenbezogenen Daten auf meinen Servern speichere, betrifft dies hauptsächlich die Daten, die du selbst in deinem Browser verwalten kannst (LocalStorage löschen).</p>
+    
+    <h2>6. Kontakt</h2>
+    <p>Bei Fragen zum Datenschutz schreib mir einfach: <a href="mailto:info@sven-neurath.de">info@sven-neurath.de</a></p>
+</PageLayout>
+
+<style>
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        background: linear-gradient(90deg, #ff3366, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #fff;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+        color: #fff;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    p, ul {
+        color: #a0a0a0;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        padding-left: 1.5rem;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+
+    a {
+        color: #00d9ff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .highlight-box {
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+        margin: 0;
+        color: #e0e0e0;
+    }
+</style>

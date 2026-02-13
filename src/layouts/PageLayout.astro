@@ -1,0 +1,66 @@
+---
+// src/layouts/PageLayout.astro
+// Layout für Unterseiten (Impressum, Datenschutz, Blog-Posts, Projekte)
+
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+    <div class="page-container">
+        <a href="/" class="back-link">← Zurück zur Startseite</a>
+        
+        <slot />
+
+        <footer class="page-footer">
+            <p>© 2026 Sven Neurath | <a href="/">Zurück zur Startseite</a></p>
+        </footer>
+    </div>
+</BaseLayout>
+
+<style>
+    .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #00d9ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+        transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+        opacity: 0.8;
+    }
+
+    .page-footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        color: #6b6b7b;
+        font-size: 0.875rem;
+    }
+
+    .page-footer a {
+        color: #00d9ff;
+        text-decoration: none;
+    }
+
+    .page-footer a:hover {
+        text-decoration: underline;
+    }
+</style>

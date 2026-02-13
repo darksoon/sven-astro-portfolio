@@ -1,0 +1,235 @@
+---
+// src/layouts/BlogPost.astro
+// Layout für einzelne Blog-Posts - wird automatisch für Markdown-Dateien verwendet
+
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: string;
+    tags: string[];
+    image?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const formattedDate = new Date(frontmatter.date).toLocaleDateString('de-DE', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout title={`${frontmatter.title} | Sven Neurath`} description={frontmatter.description}>
+    <article class="blog-post">
+        <a href="/blog" class="back-link">← Alle Posts</a>
+
+        <header class="post-header">
+            <div class="post-meta">
+                <time datetime={frontmatter.date}>{formattedDate}</time>
+            </div>
+            <h1 class="post-title">{frontmatter.title}</h1>
+            <p class="post-description">{frontmatter.description}</p>
+            <div class="post-tags">
+                {frontmatter.tags.map((tag) => (
+                    <span class="post-tag">{tag}</span>
+                ))}
+            </div>
+        </header>
+
+        <div class="post-content">
+            <slot />
+        </div>
+
+        <footer class="post-footer">
+            <a href="/blog">← Zurück zum Blog</a>
+            <a href="/">Startseite</a>
+        </footer>
+    </article>
+</BaseLayout>
+
+<style>
+    .blog-post {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #00d9ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+        transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+        opacity: 0.8;
+    }
+
+    .post-header {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .post-meta {
+        margin-bottom: 1rem;
+    }
+
+    .post-meta time {
+        color: #00d9ff;
+        font-size: 0.9rem;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .post-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(90deg, #ff3366, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.2;
+    }
+
+    .post-description {
+        font-size: 1.2rem;
+        color: #a0a0a0;
+        margin-bottom: 1.5rem;
+    }
+
+    .post-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .post-tag {
+        padding: 0.25rem 0.75rem;
+        background: rgba(0, 217, 255, 0.1);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        color: #00d9ff;
+    }
+
+    /* Markdown Content Styling */
+    .post-content {
+        color: #e0e0e0;
+        line-height: 1.8;
+    }
+
+    .post-content :global(h2) {
+        font-size: 1.75rem;
+        color: #fff;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .post-content :global(h3) {
+        font-size: 1.3rem;
+        color: #fff;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .post-content :global(p) {
+        margin-bottom: 1.25rem;
+        color: #c0c0c0;
+    }
+
+    .post-content :global(a) {
+        color: #00d9ff;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 217, 255, 0.3);
+        transition: border-color 0.3s;
+    }
+
+    .post-content :global(a:hover) {
+        border-color: #00d9ff;
+    }
+
+    .post-content :global(code) {
+        background: rgba(0, 217, 255, 0.1);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85em;
+        color: #00d9ff;
+    }
+
+    .post-content :global(pre) {
+        background: rgba(26, 26, 37, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1.5rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+    }
+
+    .post-content :global(pre code) {
+        background: none;
+        padding: 0;
+        font-size: 0.85rem;
+        color: #e0e0e0;
+    }
+
+    .post-content :global(blockquote) {
+        border-left: 4px solid #00d9ff;
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        background: rgba(0, 217, 255, 0.05);
+        border-radius: 0 12px 12px 0;
+    }
+
+    .post-content :global(blockquote p) {
+        color: #a0a0a0;
+        margin: 0;
+    }
+
+    .post-content :global(img) {
+        max-width: 100%;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+    }
+
+    .post-content :global(ul), .post-content :global(ol) {
+        padding-left: 1.5rem;
+        margin-bottom: 1.25rem;
+        color: #c0c0c0;
+    }
+
+    .post-content :global(li) {
+        margin-bottom: 0.5rem;
+    }
+
+    .post-footer {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .post-footer a {
+        color: #00d9ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .post-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .post-title {
+            font-size: 1.75rem;
+        }
+    }
+</style>

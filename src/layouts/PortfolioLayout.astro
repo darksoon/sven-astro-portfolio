@@ -1,0 +1,31 @@
+---
+// src/layouts/PortfolioLayout.astro
+// Layout für die Hauptseite mit Nav, Background-FX und Footer
+
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <Nav />
+    
+    <main>
+        <slot />
+    </main>
+
+    <Footer />
+
+    <script is:inline src="/scripts/main.js"></script>
+</BaseLayout>

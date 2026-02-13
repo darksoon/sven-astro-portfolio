@@ -1,0 +1,337 @@
+---
+// src/pages/snake.astro
+// Fullscreen Snake AI - Mobile & Desktop
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="SNAKE_AI // NEURATH.SYS">
+    <div class="page">
+        <div class="top-bar">
+            <a href="/" class="back-btn">← BACK</a>
+            <span class="page-brand">NEURATH.SYS</span>
+        </div>
+        <div class="crt-housing">
+            <div class="crt-inner">
+                <div class="crt-screen" id="crtScreen">
+                    <div class="crt-scanbeam"></div>
+                    <div class="t-header">
+                        <div class="t-title"><span class="t-name">SNAKE_AI</span><span class="t-ver">v2.7.1</span></div>
+                        <div class="t-dots"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div></div>
+                    </div>
+                    <div class="t-status">
+                        <div class="s-group">
+                            <div class="s-item">SCORE:<span class="v" id="score">0</span></div>
+                            <div class="s-item hi">BEST:<span class="v" id="hiScore">0</span></div>
+                            <div class="s-item ln">LEN:<span class="v" id="lenVal">3</span></div>
+                        </div>
+                        <div class="s-item">TICK:<span class="v" id="tickVal">0</span></div>
+                    </div>
+                    <div class="c-wrap">
+                        <canvas id="snakeCanvas"></canvas>
+                        <div class="death" id="deathOverlay">
+                            <div class="death-t">TERMINATED</div>
+                            <div class="death-s">REBOOTING NEURAL CORE...</div>
+                        </div>
+                    </div>
+                    <div class="t-footer">
+                        <div class="ai-ind"><div class="ai-dot"></div>NEURAL NET ACTIVE</div>
+                        <div class="sys" id="sysInfo">PID:7741 MEM:OK</div>
+                    </div>
+                </div>
+            </div>
+            <div class="h-bottom">
+                <div class="leds"><div class="l lg"></div><div class="l lc"></div><div class="l lm"></div><div class="l lg"></div></div>
+                <div class="bm">NEURATH.SYS</div>
+                <div class="leds"><div class="l lm"></div><div class="l lg"></div><div class="l lc"></div><div class="l lg"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline>
+    (function(){
+      var G=28,SPD=70,RD=1800;
+      var c=document.getElementById('snakeCanvas');if(!c)return;
+      var x=c.getContext('2d');
+      var sE=document.getElementById('score'),hE=document.getElementById('hiScore');
+      var lE=document.getElementById('lenVal'),tE=document.getElementById('tickVal');
+      var yE=document.getElementById('sysInfo'),scr=document.getElementById('crtScreen');
+      var dO=document.getElementById('deathOverlay');
+      var sn,dr,fd,sc,hi=0,cl,lp,tk=0,pts=[],tr=[];
+
+      function rs(){
+        var w=c.parentElement,ww=w.clientWidth||w.offsetWidth,hh=w.clientHeight||w.offsetHeight;
+        if(ww<20||hh<20)return;c.width=ww;c.height=hh;cl=Math.min(ww,hh)/G;
+      }
+      function init(){
+        rs();var m=Math.floor(G/2);
+        sn=[{x:m,y:m},{x:m-1,y:m},{x:m-2,y:m}];dr={x:1,y:0};sc=0;tk=0;pts=[];tr=[];
+        if(sE)sE.textContent='0';if(lE)lE.textContent='3';if(tE)tE.textContent='0';
+        if(dO)dO.classList.remove('on');pf();
+      }
+      function pf(){
+        var p;do{p={x:Math.floor(Math.random()*G),y:Math.floor(Math.random()*G)};}
+        while(sn.some(function(s){return s.x===p.x&&s.y===p.y;}));fd=p;
+      }
+      function ai(){
+        var h=sn[0],mv=[{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}];
+        var vl=mv.filter(function(m){return!(m.x===-dr.x&&m.y===-dr.y);});
+        function sf(m){var nx=h.x+m.x,ny=h.y+m.y;if(nx<0||nx>=G||ny<0||ny>=G)return false;
+          for(var i=0;i<sn.length-1;i++)if(sn[i].x===nx&&sn[i].y===ny)return false;return true;}
+        function fl(sx,sy){
+          var vs=new Set(),q=[{x:sx,y:sy}],ct=0,mx=Math.floor(G*G*0.5);vs.add(sx+','+sy);
+          while(q.length&&ct<mx){var cu=q.shift();ct++;
+            for(var di=0;di<mv.length;di++){var d=mv[di],nx=cu.x+d.x,ny=cu.y+d.y,k=nx+','+ny;
+              if(nx>=0&&nx<G&&ny>=0&&ny<G&&!vs.has(k)&&!sn.some(function(s,i){return i<sn.length-1&&s.x===nx&&s.y===ny;}))
+                {vs.add(k);q.push({x:nx,y:ny});}}}return ct;}
+        var sm=vl.filter(function(m){return sf(m);});if(!sm.length)return dr;
+        var b=sm[0],bs=-Infinity;
+        for(var i=0;i<sm.length;i++){var m=sm[i],nx=h.x+m.x,ny=h.y+m.y;
+          var ds=Math.abs(nx-fd.x)+Math.abs(ny-fd.y),sp=fl(nx,ny);
+          var s=sp>=sn.length+2?1000-ds:sp;if(s>bs){bs=s;b=m;}}return b;
+      }
+      function spn(px,py,co,n){n=n||10;for(var i=0;i<n;i++){var a=Math.random()*Math.PI*2,s=1+Math.random()*3;
+        pts.push({x:(px+0.5)*cl,y:(py+0.5)*cl,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,sz:1+Math.random()*3,co:co});}}
+      function up(){for(var i=pts.length-1;i>=0;i--){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vx*=0.96;p.vy*=0.96;p.life-=0.03;if(p.life<=0)pts.splice(i,1);}}
+      function dp(){for(var i=0;i<pts.length;i++){var p=pts[i];x.globalAlpha=p.life*0.8;x.fillStyle=p.co;x.shadowColor=p.co;x.shadowBlur=8;
+        x.fillRect(p.x-p.sz/2,p.y-p.sz/2,p.sz,p.sz);}x.globalAlpha=1;x.shadowBlur=0;}
+
+      function upd(){
+        if(!cl||cl<1){rs();if(!cl||cl<1)return;}
+        dr=ai();var hd={x:sn[0].x+dr.x,y:sn[0].y+dr.y};tk++;if(tE)tE.textContent=tk;
+        if(hd.x<0||hd.x>=G||hd.y<0||hd.y>=G||sn.some(function(s){return s.x===hd.x&&s.y===hd.y;})){die();return;}
+        tr.push({x:sn[0].x,y:sn[0].y,life:1});sn.unshift(hd);
+        if(hd.x===fd.x&&hd.y===fd.y){sc+=10;if(sE)sE.textContent=sc;if(sc>hi){hi=sc;if(hE)hE.textContent=hi;}
+          if(lE)lE.textContent=sn.length;spn(fd.x,fd.y,'#00ff88',12);spn(fd.x,fd.y,'#00d9ff',6);pf();}
+        else{sn.pop();}
+        if(tk%20===0&&yE){yE.textContent='PID:'+(7700+Math.floor(Math.random()*100))+' MEM:'+(12+Math.random()*8).toFixed(1)+'MB';}
+      }
+      function die(){
+        clearInterval(lp);if(scr)scr.classList.add('glitch');if(dO)dO.classList.add('on');
+        setTimeout(function(){if(scr)scr.classList.remove('glitch');},300);
+        for(var i=0;i<sn.length;i++)if(Math.random()<0.5)spn(sn[i].x,sn[i].y,'#ff00aa',4);
+        setTimeout(function(){init();go();},RD);
+      }
+      function draw(){
+        if(!c.width||c.width<20)return;x.clearRect(0,0,c.width,c.height);
+        x.strokeStyle='rgba(0,255,136,0.025)';x.lineWidth=0.5;
+        for(var i=0;i<=G;i++){x.beginPath();x.moveTo(i*cl,0);x.lineTo(i*cl,c.height);x.stroke();
+          x.beginPath();x.moveTo(0,i*cl);x.lineTo(c.width,i*cl);x.stroke();}
+        for(var i=tr.length-1;i>=0;i--){var t=tr[i];t.life-=0.025;if(t.life<=0){tr.splice(i,1);continue;}
+          x.fillStyle='rgba(0,255,136,'+(t.life*0.08)+')';x.fillRect(t.x*cl,t.y*cl,cl,cl);}
+        for(var i=sn.length-1;i>=0;i--){var s=sn[i],pg=1-i/sn.length,pd=1;
+          if(i===0){x.fillStyle='#00ffcc';x.shadowColor='#00d9ff';x.shadowBlur=14;}
+          else{x.fillStyle='rgb('+Math.floor(pg*10)+','+Math.floor(120+pg*135)+','+Math.floor(60+pg*40)+')';
+            x.shadowColor='rgba(0,255,136,'+(0.05+pg*0.2)+')';x.shadowBlur=6;}
+          x.fillRect(s.x*cl+pd,s.y*cl+pd,cl-pd*2,cl-pd*2);
+          if(i===0){x.shadowBlur=0;x.fillStyle='rgba(0,0,0,0.3)';var es=Math.max(2,cl*0.22);
+            if(dr.x===1){x.fillRect(s.x*cl+cl*0.6,s.y*cl+cl*0.2,es,es);x.fillRect(s.x*cl+cl*0.6,s.y*cl+cl*0.62,es,es);}
+            else if(dr.x===-1){x.fillRect(s.x*cl+cl*0.18,s.y*cl+cl*0.2,es,es);x.fillRect(s.x*cl+cl*0.18,s.y*cl+cl*0.62,es,es);}
+            else if(dr.y===-1){x.fillRect(s.x*cl+cl*0.2,s.y*cl+cl*0.18,es,es);x.fillRect(s.x*cl+cl*0.62,s.y*cl+cl*0.18,es,es);}
+            else{x.fillRect(s.x*cl+cl*0.2,s.y*cl+cl*0.6,es,es);x.fillRect(s.x*cl+cl*0.62,s.y*cl+cl*0.6,es,es);}}}
+        x.shadowBlur=0;
+        var pu=0.7+Math.sin(Date.now()*0.006)*0.3,fp=2;
+        x.fillStyle='rgba(255,0,170,'+(pu*0.15)+')';x.fillRect(fd.x*cl-2,fd.y*cl-2,cl+4,cl+4);
+        x.fillStyle='rgba(255,0,170,'+pu+')';x.shadowColor='#ff00aa';x.shadowBlur=16;
+        x.fillRect(fd.x*cl+fp,fd.y*cl+fp,cl-fp*2,cl-fp*2);
+        x.fillStyle='rgba(255,150,220,'+(pu*0.5)+')';x.shadowBlur=0;var ip=cl*0.3;
+        x.fillRect(fd.x*cl+ip,fd.y*cl+ip,cl-ip*2,cl-ip*2);
+        x.strokeStyle='rgba(255,0,170,'+(pu*0.3)+')';x.lineWidth=0.5;
+        var cx2=fd.x*cl+cl/2,cy2=fd.y*cl+cl/2;
+        x.beginPath();x.moveTo(cx2,fd.y*cl-4);x.lineTo(cx2,fd.y*cl+cl+4);
+        x.moveTo(fd.x*cl-4,cy2);x.lineTo(fd.x*cl+cl+4,cy2);x.stroke();
+        up();dp();
+      }
+      function go(){clearInterval(lp);lp=setInterval(upd,SPD);}
+      function rl(){draw();requestAnimationFrame(rl);}
+      window.addEventListener('resize',function(){rs();});
+      if(typeof ResizeObserver!=='undefined'){try{new ResizeObserver(function(){rs();}).observe(c.parentElement);}catch(e){}}
+      setTimeout(function(){init();go();rl();},100);
+    })();
+    </script>
+</BaseLayout>
+
+<style is:global>
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+</style>
+
+<style>
+    .page {
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+        height: 100vh;
+        padding: 12px;
+        gap: 10px;
+        background: #050508;
+    }
+
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(0, 255, 136, 0.06);
+        border: 1px solid rgba(0, 255, 136, 0.15);
+        border-radius: 8px;
+        color: #00ff88;
+        text-decoration: none;
+        font-family: 'Share Tech Mono', 'Courier New', monospace;
+        font-size: 12px;
+        letter-spacing: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:active {
+        background: rgba(0, 255, 136, 0.15);
+        border-color: rgba(0, 255, 136, 0.4);
+    }
+
+    .page-brand {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 9px;
+        color: rgba(0, 255, 136, 0.2);
+        letter-spacing: 4px;
+    }
+
+    .crt-housing {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(145deg, #0c0c10, #06060a, #0a0a10);
+        border-radius: 12px;
+        padding: 3px;
+        box-shadow: 0 0 40px rgba(0,255,136,0.06), 0 10px 40px rgba(0,0,0,0.6);
+        outline: 1px solid rgba(0,255,136,0.12);
+    }
+
+    .crt-inner {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background: #080810;
+        border-radius: 10px;
+        padding: 2px;
+        border: 1px solid rgba(0,255,136,0.08);
+    }
+
+    .crt-screen {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background: #020a06;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .crt-screen::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.1) 1px, rgba(0,0,0,0.1) 2px);
+        pointer-events: none;
+        z-index: 20;
+    }
+
+    .crt-screen::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 75%, rgba(0,0,0,0.6) 100%);
+        pointer-events: none;
+        z-index: 21;
+    }
+
+    .crt-scanbeam {
+        position: absolute; left: 0; right: 0; height: 2px;
+        background: linear-gradient(180deg, transparent, rgba(0,255,136,0.05), transparent);
+        pointer-events: none; z-index: 22;
+        animation: scanbeam 6s linear infinite;
+    }
+    @keyframes scanbeam { 0%{top:-2px} 100%{top:100%} }
+
+    .crt-screen.glitch { animation: glitch 0.2s steps(4) 1; }
+    @keyframes glitch {
+        0%{transform:translate(0);filter:hue-rotate(0)}
+        25%{transform:translate(-2px,1px);filter:hue-rotate(90deg)}
+        50%{transform:translate(2px,-1px);filter:hue-rotate(180deg)}
+        75%{transform:translate(-1px,2px);filter:hue-rotate(270deg)}
+        100%{transform:translate(0);filter:hue-rotate(0)}
+    }
+
+    .t-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 7px 12px;
+        background: linear-gradient(180deg, rgba(0,255,136,0.05), transparent);
+        border-bottom: 1px solid rgba(0,255,136,0.1);
+        flex-shrink: 0; z-index: 5;
+    }
+    .t-title { display: flex; align-items: center; gap: 8px; }
+    .t-name {
+        font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px;
+        color: #00ff88; text-shadow: 0 0 10px rgba(0,255,136,0.5); letter-spacing: 3px;
+    }
+    .t-ver { font-size: 7px; color: #00d9ff; opacity: 0.7; }
+    .t-dots { display: flex; gap: 5px; }
+    .t-dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); }
+    .t-dot.r { background: #ff4444; box-shadow: 0 0 5px rgba(255,68,68,0.5); }
+    .t-dot.y { background: #ffaa00; box-shadow: 0 0 5px rgba(255,170,0,0.5); }
+    .t-dot.g { background: #00ff88; box-shadow: 0 0 5px rgba(0,255,136,0.5); }
+
+    .t-status {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 5px 12px; background: rgba(0,0,0,0.4);
+        border-bottom: 1px solid rgba(0,255,136,0.05);
+        flex-shrink: 0; z-index: 5;
+    }
+    .s-group { display: flex; gap: 12px; }
+    .s-item { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: rgba(0,255,136,0.5); letter-spacing: 1px; }
+    .s-item .v { font-weight: bold; color: #00ff88; text-shadow: 0 0 5px rgba(0,255,136,0.4); }
+    .s-item.hi .v { color: #ff00aa; text-shadow: 0 0 6px rgba(255,0,170,0.4); }
+    .s-item.ln .v { color: #00d9ff; text-shadow: 0 0 5px rgba(0,217,255,0.4); }
+
+    .c-wrap { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+    #snakeCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+
+    .death { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .death.on { opacity: 1; }
+    .death-t { font-family:'Orbitron',sans-serif; font-weight:900; font-size:18px; color:#ff00aa; text-shadow:0 0 20px rgba(255,0,170,0.5); letter-spacing:5px; animation:gt 0.3s steps(3) infinite; }
+    .death-s { font-size:8px; color:rgba(255,0,170,0.6); margin-top:6px; letter-spacing:3px; }
+    @keyframes gt {
+        0%{text-shadow:0 0 20px rgba(255,0,170,0.5),-2px 0 #00d9ff}
+        33%{text-shadow:0 0 20px rgba(255,0,170,0.5),2px 0 #00ff88}
+        66%{text-shadow:0 0 20px rgba(255,0,170,0.5),-1px 0 #ff00aa}
+        100%{text-shadow:0 0 20px rgba(255,0,170,0.5),1px 0 #00d9ff}
+    }
+
+    .t-footer {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 5px 12px; border-top: 1px solid rgba(0,255,136,0.08);
+        background: rgba(0,0,0,0.3); flex-shrink: 0; z-index: 5;
+    }
+    .ai-ind { display: flex; align-items: center; gap: 6px; font-size: 8px; color: #00d9ff; text-shadow: 0 0 5px rgba(0,217,255,0.4); letter-spacing: 2px; }
+    .ai-dot { width:5px;height:5px;border-radius:50%;background:#00d9ff;box-shadow:0 0 6px rgba(0,217,255,0.4);animation:ap 1s ease-in-out infinite; }
+    @keyframes ap { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+    .sys { font-size: 7px; color: rgba(0,255,136,0.25); letter-spacing: 1px; }
+
+    .h-bottom { display:flex;align-items:center;justify-content:space-between;padding:6px 14px 3px; }
+    .leds { display:flex;gap:5px; }
+    .l { width:4px;height:4px;border-radius:50%; }
+    .lg { background:#00ff88;box-shadow:0 0 3px rgba(0,255,136,0.5); }
+    .lc { background:#00d9ff;box-shadow:0 0 3px rgba(0,217,255,0.4); }
+    .lm { background:#ff00aa;box-shadow:0 0 3px rgba(255,0,170,0.4); }
+    .bm { font-size:6px;color:rgba(0,255,136,0.12);letter-spacing:3px; }
+</style>

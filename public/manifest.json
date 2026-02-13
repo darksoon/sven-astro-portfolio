@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-02-12T19:00:00Z",
+  "system": {
+    "os": "Unraid 7.2.3",
+    "uptime": "53 days",
+    "storage_total": "6.4TB",
+    "storage_percent": 54,
+    "ram_used": "12GB",
+    "ram_percent": 76,
+    "containers_running": 10,
+    "containers_total": 10
+  },
+  "containers": [
+    { "name": "jellyfin", "status": "running", "uptime": "Up 2d" },
+    { "name": "VaultWarden", "status": "running", "uptime": "Up 18h" },
+    { "name": "NextCloud", "status": "running", "uptime": "Up 6h" },
+    { "name": "Immich", "status": "running", "uptime": "Up 18h" },
+    { "name": "Home Assistant", "status": "running", "uptime": "Up 18h" },
+    { "name": "n8n", "status": "running", "uptime": "Up 18h" },
+    { "name": "Nginx reverse Proxy", "status": "running", "uptime": "Up 2d" },
+    { "name": "ADguard Home", "status": "running", "uptime": "Up 2d" },
+    { "name": "Gitea", "status": "running", "uptime": "Up 9h" },
+    { "name": "OpenClaw", "status": "running", "uptime": "Up 20h" }
+  ]
+}
