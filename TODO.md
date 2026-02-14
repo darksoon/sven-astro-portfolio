@@ -7,11 +7,22 @@
 
 ## 📦 PHASE 1: Foundation
 
-- [ ] Import Aliases (@/components statt ../../)
-- [ ] Site-Config zentralisieren
-- [ ] Content Collections (typsichere Blog-Posts)
+- [x] Import Aliases (@/components statt ../../)
+- [x] Site-Config zentralisiert
+- [x] Content Collections (typsichere Blog-Posts)
 
-**Status:** ⏳ Noch nicht gestartet
+**Status:** ✅ Bereit zum Deploy — Siehe `CHANGES.md` für Details
+
+**Commit-Vorschlag:**
+```
+feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
+
+- Add TypeScript path mappings (@/* aliases)
+- Create centralized site config (src/config/site.ts)
+- Migrate blog from Astro.glob() to Content Collections
+- Update all imports to use new aliases
+- Add Zod schema for type-safe blog posts
+```
 
 ---
 

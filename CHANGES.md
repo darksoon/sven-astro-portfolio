@@ -1,6 +1,118 @@
 # Änderungen & Offene Punkte
 
-> Letzte Aktualisierung: 13.02.2026
+> Letzte Aktualisierung: 14.02.2026
+
+---
+
+## Phase 1: Foundation — 14.02.2026
+
+### 1. Import Aliases eingerichtet
+
+**Problem:** Tiefe relative Import-Pfade (`../../../components`) waren unübersichtlich und fehleranfällig.
+
+**Lösung:** TypeScript Path Mappings in `tsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/layouts/*": ["src/layouts/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/config/*": ["src/config/*"]
+    }
+  }
+}
+```
+
+**Betroffene Dateien:** 9 Astro-Komponenten aktualisiert
+- Alle Layouts: `@/layouts/BaseLayout.astro`, `@/components/Nav.astro`
+- Alle Pages: `@/layouts/PortfolioLayout.astro`
+
+---
+
+### 2. Site-Config zentralisiert
+
+**Neue Datei:** `src/config/site.ts`
+
+**Enthält:**
+- Site-URL, Name (DE/EN), Meta-Beschreibungen
+- Autor-Informationen (Name, Email, GitHub, etc.)
+- Social Links (GitHub, Discord, Itch.io, Email)
+- Copyright-Info, Default-Sprache
+- Helper-Funktionen: `getPageTitle()`, `getMetaDescription()`
+
+**Betroffene Dateien:**
+- `astro.config.mjs` — nutzt `siteConfig.url`
+- `src/layouts/BaseLayout.astro` — Meta-Tags, Open Graph, Canonical URL
+- `src/layouts/PortfolioLayout.astro` — Description-Handling
+- `src/layouts/PageLayout.astro` — Copyright, bilinguale Footer-Texte
+- `src/layouts/BlogPost.astro` — Dynamische Seitentitel
+- `src/components/Footer.astro` — Dynamisches Copyright-Jahr
+- `src/pages/index.astro` — Social Links, Manifest URL
+- `src/pages/blog.astro` — Blog-Titel/Beschreibung
+- `src/pages/impressum.astro` — Autor-Daten
+- `src/pages/datenschutz.astro` — Autor-Daten
+- `src/pages/snake.astro` — Branding-Texte
+
+---
+
+### 3. Content Collections für Blog
+
+**Problem:** `Astro.glob()` ist veraltet und typsicher.
+
+**Lösung:** Astro Content Collections mit Zod-Validierung
+
+**Neue Dateien:**
+- `src/content/config.ts` — Zod-Schema für Blog-Posts
+- `src/content/blog/*.md` — Blog-Posts (verschoben von `src/pages/blog/`)
+- `src/pages/blog/[...slug].astro` — Dynamische Route für einzelne Posts
+
+**Schema (Zod):**
+```typescript
+{
+  title: z.string(),
+  description: z.string(),
+  date: z.date(),
+  tags: z.array(z.string()),
+  image: z.string().optional(),
+  draft: z.boolean().optional().default(false)
+}
+```
+
+**Geänderte Dateien:**
+- `src/pages/blog.astro` — Nutzt `getCollection('blog')` statt `Astro.glob()`
+- `src/layouts/BlogPost.astro` — Props angepasst für `CollectionEntry<'blog'>`
+
+**Entfernte Dateien:**
+- `src/pages/blog/live-homelab-daten.md` → `src/content/blog/`
+- `src/pages/blog/von-html-zu-astro.md` → `src/content/blog/`
+
+**URLs bleiben gleich:** `/blog/post-name`
+
+**Neue Features:**
+- Typsichere Blog-Posts mit IntelliSense
+- Draft-System bereit (Posts mit `draft: true` werden gefiltert)
+- Erweiterbar für weitere Collections (z.B. Projekte)
+
+---
+
+## Test-Checkliste Phase 1
+
+- [x] Build erfolgreich (`npm run build`)
+- [x] Alle 7 Seiten generiert
+- [ ] Deploy auf Server
+- [ ] Startseite lädt korrekt
+- [ ] Blog-Übersicht zeigt alle Posts
+- [ ] Einzelne Blog-Posts erreichbar (`/blog/post-name`)
+- [ ] Navigation funktioniert
+- [ ] Sprachwechsel (DE/EN) klappt
+- [ ] Keine 404-Fehler
+
+---
+
+## Alte Änderungen
 
 ---
 

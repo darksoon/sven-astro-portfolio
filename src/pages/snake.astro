@@ -1,14 +1,18 @@
 ---
 // src/pages/snake.astro
 // Fullscreen Snake AI - Mobile & Desktop
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pageTitle = `SNAKE_AI // ${siteConfig.name.de.toUpperCase()}.SYS`;
+const siteName = `${siteConfig.name.de.toUpperCase()}.SYS`;
 ---
 
-<BaseLayout title="SNAKE_AI // NEURATH.SYS">
+<BaseLayout title={pageTitle}>
     <div class="page">
         <div class="top-bar">
             <a href="/" class="back-btn">← BACK</a>
-            <span class="page-brand">NEURATH.SYS</span>
+            <span class="page-brand">{siteName}</span>
         </div>
         <div class="crt-housing">
             <div class="crt-inner">
@@ -41,7 +45,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
             <div class="h-bottom">
                 <div class="leds"><div class="l lg"></div><div class="l lc"></div><div class="l lm"></div><div class="l lg"></div></div>
-                <div class="bm">NEURATH.SYS</div>
+                <div class="bm">{siteName}</div>
                 <div class="leds"><div class="l lm"></div><div class="l lg"></div><div class="l lc"></div><div class="l lg"></div></div>
             </div>
         </div>

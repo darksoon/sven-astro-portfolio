@@ -1,12 +1,16 @@
 ---
 // src/components/Footer.astro
+
+import { siteConfig } from '@/config/site';
+
+const { copyright } = siteConfig;
 ---
 
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
-            <p class="footer-text" data-de="© 2026 Sven Neurath. Infrastruktur und Spiele bauen." data-en="© 2026 Sven Neurath. Building infrastructure and games.">
-                © 2026 Sven Neurath. Infrastruktur und Spiele bauen.
+            <p class="footer-text" data-de={`© ${copyright.year} ${copyright.holder}. ${copyright.tagline.de}`} data-en={`© ${copyright.year} ${copyright.holder}. ${copyright.tagline.en}`}>
+                © {copyright.year} {copyright.holder}. {copyright.tagline.de}
             </p>
             <div class="footer-links">
                 <a href="/blog" class="footer-link">Blog</a>

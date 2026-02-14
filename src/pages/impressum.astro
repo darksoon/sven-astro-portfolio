@@ -1,25 +1,30 @@
 ---
 // src/pages/impressum.astro
-import PageLayout from '../layouts/PageLayout.astro';
+import { siteConfig, getPageTitle } from '@/config/site';
+import PageLayout from '@/layouts/PageLayout.astro';
+
+const pageTitle = getPageTitle('Impressum', 'de');
+const author = siteConfig.author;
+const social = siteConfig.social;
 ---
 
-<PageLayout title="Impressum | Sven Neurath">
+<PageLayout title={pageTitle}>
     <h1>Impressum</h1>
     
     <h2>Angaben gemäß § 5 DDG</h2>
     
     <div class="address">
-        <p><strong>Sven Neurath</strong></p>
+        <p><strong>{author.name}</strong></p>
         <p>Steinmühlenweg 17</p>
         <p>38173 Erkerode</p>
         <p>Deutschland</p>
     </div>
     
     <h2>Kontakt</h2>
-    <p>E-Mail: <a href="mailto:info@sven-neurath.de">info@sven-neurath.de</a></p>
+    <p>E-Mail: <a href={`mailto:${social.email}`}>{social.email}</a></p>
     
     <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
-    <p>Sven Neurath</p>
+    <p>{author.name}</p>
     <p>Steinmühlenweg 17</p>
     <p>38173 Erkerode</p>
     

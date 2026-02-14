@@ -2,24 +2,42 @@
 // src/layouts/PageLayout.astro
 // Layout für Unterseiten (Impressum, Datenschutz, Blog-Posts, Projekte)
 
+import { siteConfig } from '@/config/site';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   title: string;
   description?: string;
+  lang?: 'de' | 'en';
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang = siteConfig.defaults.lang } = Astro.props;
+
+// Übersetzungen für die Navigation
+const t = {
+  backToHome: {
+    de: '← Zurück zur Startseite',
+    en: '← Back to Home',
+  },
+  footerHome: {
+    de: 'Zurück zur Startseite',
+    en: 'Back to Home',
+  },
+  copyright: {
+    de: `© ${siteConfig.copyright.year} ${siteConfig.copyright.holder} | `,
+    en: `© ${siteConfig.copyright.year} ${siteConfig.copyright.holder} | `,
+  },
+};
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} lang={lang}>
     <div class="page-container">
-        <a href="/" class="back-link">← Zurück zur Startseite</a>
+        <a href="/" class="back-link">{t.backToHome[lang]}</a>
         
         <slot />
 
         <footer class="page-footer">
-            <p>© 2026 Sven Neurath | <a href="/">Zurück zur Startseite</a></p>
+            <p>{t.copyright[lang]}<a href="/">{t.footerHome[lang]}</a></p>
         </footer>
     </div>
 </BaseLayout>

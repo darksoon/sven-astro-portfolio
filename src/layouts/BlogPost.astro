@@ -1,39 +1,37 @@
 ---
 // src/layouts/BlogPost.astro
-// Layout für einzelne Blog-Posts - wird automatisch für Markdown-Dateien verwendet
+// Layout für einzelne Blog-Posts - wird für Content Collections verwendet
 
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
-  frontmatter: {
-    title: string;
-    description: string;
-    date: string;
-    tags: string[];
-    image?: string;
-  };
+    post: CollectionEntry<'blog'>;
 }
 
-const { frontmatter } = Astro.props;
-const formattedDate = new Date(frontmatter.date).toLocaleDateString('de-DE', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
+const { post } = Astro.props;
+const { data } = post;
+const { title, description, date, tags } = data;
+
+const formattedDate = date.toLocaleDateString('de-DE', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
 });
 ---
 
-<BaseLayout title={`${frontmatter.title} | Sven Neurath`} description={frontmatter.description}>
+<BaseLayout title={`${title} | Sven Neurath`} description={description}>
     <article class="blog-post">
         <a href="/blog" class="back-link">← Alle Posts</a>
 
         <header class="post-header">
             <div class="post-meta">
-                <time datetime={frontmatter.date}>{formattedDate}</time>
+                <time datetime={date.toISOString()}>{formattedDate}</time>
             </div>
-            <h1 class="post-title">{frontmatter.title}</h1>
-            <p class="post-description">{frontmatter.description}</p>
+            <h1 class="post-title">{title}</h1>
+            <p class="post-description">{description}</p>
             <div class="post-tags">
-                {frontmatter.tags.map((tag) => (
+                {tags.map((tag) => (
                     <span class="post-tag">{tag}</span>
                 ))}
             </div>

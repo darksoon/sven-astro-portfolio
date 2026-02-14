@@ -1,31 +1,37 @@
 ---
 // src/pages/index.astro
-// Hauptseite - dein bestehendes Portfolio
+// Hauptseite - Portfolio mit Site-Konfiguration
 
+import { siteConfig, manifestUrl } from '@/config/site';
 import PortfolioLayout from '../layouts/PortfolioLayout.astro';
 
 // Stats zur Buildzeit laden (optional, wird clientseitig aktualisiert)
 let stats = null;
 try {
-    const res = await fetch('https://sven-neurath.de/manifest.json');
+    const res = await fetch(manifestUrl);
     if (res.ok) stats = await res.json();
 } catch (e) {
     // Fallback auf statische Werte
 }
 
 const sys = stats?.system;
+
+// Site-spezifische Daten
+const pageTitle = siteConfig.title.de;
+const social = siteConfig.social;
+const author = siteConfig.author;
 ---
 
-<PortfolioLayout title="Sven Neurath | System Administrator & Game Developer">
+<PortfolioLayout title={pageTitle}>
 
     <!-- Hero Section -->
     <section id="hero" class="hero">
         <div class="hero-content">
             <div class="hero-mascot">
-                <img src="/img/avatar.png" alt="Sven Neurath" class="avatar-img">
+                <img src="/img/avatar.png" alt={author.name} class="avatar-img">
             </div>
             <h1 class="hero-title">
-                <span class="gradient-text" data-de="SVEN NEURATH" data-en="SVEN NEURATH">SVEN NEURATH</span>
+                <span class="gradient-text" data-de={siteConfig.name.de} data-en={siteConfig.name.en}>{siteConfig.name.de}</span>
             </h1>
             <p class="hero-subtitle" data-de="Infrastruktur ist kein Zufall – sondern mein Hobby." data-en="Infrastructure isn't luck – it's my hobby.">
                 Infrastruktur ist kein Zufall – sondern mein Hobby.
@@ -429,19 +435,19 @@ const sys = stats?.system;
             <div class="contact-content">
                 <p class="contact-text" data-de="Interesse an einer Zusammenarbeit? Schreib mir!" data-en="Interested in working together? Hit me up!">Interesse an einer Zusammenarbeit? Schreib mir!</p>
                 <div class="contact-links">
-                    <a href="mailto:info@sven-neurath.de" class="contact-link">
+                    <a href={`mailto:${social.email}`} class="contact-link">
                         <span class="contact-icon">📧</span>
                         <span>Email</span>
                     </a>
-                    <a href="https://github.com/DarkSoon" class="contact-link" target="_blank" rel="noopener">
+                    <a href={social.github.url} class="contact-link" target="_blank" rel="noopener">
                         <span class="contact-icon">💻</span>
                         <span>GitHub</span>
                     </a>
-                    <a href="https://itch.io" class="contact-link" target="_blank" rel="noopener">
+                    <a href={social.itch.url} class="contact-link" target="_blank" rel="noopener">
                         <span class="contact-icon">🎮</span>
                         <span>Itch.io</span>
                     </a>
-                    <a href="https://discord.com/users/213665789952131073" class="contact-link" target="_blank" rel="noopener">
+                    <a href={social.discord.url} class="contact-link" target="_blank" rel="noopener">
                         <span class="contact-icon">💬</span>
                         <span>Discord</span>
                     </a>

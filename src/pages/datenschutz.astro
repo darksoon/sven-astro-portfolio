@@ -1,9 +1,14 @@
 ---
 // src/pages/datenschutz.astro
-import PageLayout from '../layouts/PageLayout.astro';
+import { siteConfig, getPageTitle } from '@/config/site';
+import PageLayout from '@/layouts/PageLayout.astro';
+
+const pageTitle = getPageTitle('Datenschutz', 'de');
+const author = siteConfig.author;
+const social = siteConfig.social;
 ---
 
-<PageLayout title="Datenschutz | Sven Neurath">
+<PageLayout title={pageTitle}>
     <h1>Datenschutzerklärung</h1>
     
     <div class="highlight-box">
@@ -11,10 +16,10 @@ import PageLayout from '../layouts/PageLayout.astro';
     </div>
     
     <h2>1. Verantwortlicher</h2>
-    <p>Sven Neurath<br>
+    <p>{author.name}<br>
     Steinmühlenweg 17<br>
     38173 Erkerode<br>
-    E-Mail: <a href="mailto:info@sven-neurath.de">info@sven-neurath.de</a></p>
+    E-Mail: <a href={`mailto:${social.email}`}>{social.email}</a></p>
     
     <h2>2. Hosting</h2>
     <p>Diese Website wird bei <strong>Netcup</strong> gehostet. Beim Aufrufen der Seite werden technisch bedingt Server-Logs erstellt (IP-Adresse, Zeitstempel, aufgerufene Seite). Diese Daten werden nur zur Fehlerbehebung genutzt und nicht mit anderen Datenquellen zusammengeführt.</p>
@@ -51,7 +56,7 @@ import PageLayout from '../layouts/PageLayout.astro';
     <p>Da ich keine personenbezogenen Daten auf meinen Servern speichere, betrifft dies hauptsächlich die Daten, die du selbst in deinem Browser verwalten kannst (LocalStorage löschen).</p>
     
     <h2>6. Kontakt</h2>
-    <p>Bei Fragen zum Datenschutz schreib mir einfach: <a href="mailto:info@sven-neurath.de">info@sven-neurath.de</a></p>
+    <p>Bei Fragen zum Datenschutz schreib mir einfach: <a href={`mailto:${social.email}`}>{social.email}</a></p>
 </PageLayout>
 
 <style>

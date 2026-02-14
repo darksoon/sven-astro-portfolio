@@ -1,8 +1,7 @@
 ---
-layout: ../../layouts/BlogPost.astro
 title: "Live-Daten vom Homelab auf die Website"
 description: "Wie ich mit n8n, Unraid und einer einfachen JSON-Datei echte Server-Statistiken auf meine Portfolio-Seite bringe."
-date: "2026-02-13"
+date: 2026-02-13
 tags: ["Homelab", "n8n", "Unraid", "Automation"]
 ---
 

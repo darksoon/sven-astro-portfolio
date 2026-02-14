@@ -2,20 +2,39 @@
 // src/layouts/BaseLayout.astro
 // Haupt-Layout für alle Seiten - ersetzt dupliziertes HTML/CSS
 
+import { siteConfig, getMetaDescription } from '@/config/site';
+
 interface Props {
   title: string;
   description?: string;
+  lang?: 'de' | 'en';
 }
 
-const { title, description = 'Sven Neurath - IT Systemintegration | Homelab, Docker, Linux & Game Development' } = Astro.props;
+const { 
+  title, 
+  description = getMetaDescription(undefined, Astro.props.lang || siteConfig.defaults.lang),
+  lang = siteConfig.defaults.lang 
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 ---
 
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang={lang} data-theme={siteConfig.defaults.theme}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content={description}>
+    <meta name="author" content={siteConfig.author.name}>
+    <link rel="canonical" href={canonicalUrl}>
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={canonicalUrl}>
+    <meta property="og:site_name" content={siteConfig.name[lang]}>
+    
     <title>{title}</title>
     <link rel="icon" type="image/x-icon" href="/img/avatar.png">
     <link href="/fonts/fonts.css" rel="stylesheet">

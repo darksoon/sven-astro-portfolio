@@ -2,16 +2,21 @@
 // src/pages/blog.astro
 // Blog-Übersicht - listet alle Markdown-Posts auf
 
+import { getCollection } from 'astro:content';
+import { siteConfig, getPageTitle, getMetaDescription } from '@/config/site';
 import PortfolioLayout from '../layouts/PortfolioLayout.astro';
 
-// Alle Blog-Posts laden und nach Datum sortieren
-const allPosts = await Astro.glob('./blog/*.md');
-const posts = allPosts.sort(
-    (a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
-);
+// Alle Blog-Posts laden, Drafts filtern und nach Datum sortieren
+const allPosts = await getCollection('blog');
+const posts = allPosts
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const pageTitle = getPageTitle(siteConfig.blog.title.de, 'de');
+const pageDescription = siteConfig.blog.description.de;
 ---
 
-<PortfolioLayout title="Blog | Sven Neurath">
+<PortfolioLayout title={pageTitle} description={pageDescription}>
     <section class="blog-listing">
         <div class="container">
             <div class="section-header">
@@ -28,20 +33,20 @@ const posts = allPosts.sort(
 
             <div class="posts-grid">
                 {posts.map((post) => (
-                    <a href={post.url} class="post-card">
+                    <a href={`/blog/${post.slug}`} class="post-card">
                         <div class="post-card-meta">
-                            <time datetime={post.frontmatter.date}>
-                                {new Date(post.frontmatter.date).toLocaleDateString('de-DE', {
+                            <time datetime={post.data.date.toISOString()}>
+                                {post.data.date.toLocaleDateString('de-DE', {
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
                                 })}
                             </time>
                         </div>
-                        <h2 class="post-card-title">{post.frontmatter.title}</h2>
-                        <p class="post-card-desc">{post.frontmatter.description}</p>
+                        <h2 class="post-card-title">{post.data.title}</h2>
+                        <p class="post-card-desc">{post.data.description}</p>
                         <div class="post-card-tags">
-                            {post.frontmatter.tags.map((tag: string) => (
+                            {post.data.tags.map((tag: string) => (
                                 <span class="post-card-tag">{tag}</span>
                             ))}
                         </div>
