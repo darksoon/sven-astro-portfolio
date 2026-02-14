@@ -492,6 +492,18 @@ const personSchema = {
 <script is:inline src="/scripts/snake.js"></script>
 <script is:inline src="/scripts/term.js"></script>
 
+<!-- Snake Neustart nach View Transition -->
+<script is:inline>
+    // Snake neu initialisieren nach View Transition
+    document.addEventListener('astro:page-load', function() {
+        // Snake-Canvas zurücksetzen wenn vorhanden
+        const canvas = document.getElementById('snakeCanvas');
+        if (canvas && typeof window.snakeReset === 'function') {
+            window.snakeReset();
+        }
+    });
+</script>
+
 <!-- Konami Code Easter Egg -->
 <script is:inline>
 (function() {

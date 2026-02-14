@@ -55,6 +55,22 @@
 
 ---
 
+## 🖥️ Homelab Advanced
+
+### Erweiterte Status-Seite mit Graphen
+- **Beschreibung:** Neue Seite `/status` oder `/homelab` mit:
+  - Live-CPU/RAM-Graphen über 24h
+  - Container-Status als visuelle Grid-View
+  - Uptime-History
+  - Storage-Trends
+- **Daten:** 2 Endpunkte nötig:
+  - `manifest.json` (alle 15 Min) für aktuellen Status
+  - `history.json` (1x/Tag) für 24h-Graphen
+- **Visualisierung:** Chart.js oder eigene Canvas-Lösung
+- **Priorität:** Mittel (erst wenn mehr Daten vorhanden)
+
+---
+
 ## 🚀 "Maybe Someday"
 
 | Feature | Beschreibung | Warum später? |
