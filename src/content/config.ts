@@ -11,6 +11,7 @@ const blogCollection = defineCollection({
         description: z.string(),
         date: z.date(),
         tags: z.array(z.string()),
+        category: z.enum(['Homelab', 'Website', 'GameDev']).default('Website'),
         image: z.string().optional(),
         draft: z.boolean().optional().default(false),
     }),

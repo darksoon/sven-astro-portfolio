@@ -36,6 +36,14 @@ const blogSchema = {
         keywords: post.data.tags,
     })),
 };
+
+// Kategorien-Definition mit Emoji-Mapping
+const categories = [
+    { id: 'all', label: 'Alle', emoji: '' },
+    { id: 'Homelab', label: 'Homelab', emoji: '🖥️' },
+    { id: 'Website', label: 'Website', emoji: '🌐' },
+    { id: 'GameDev', label: 'GameDev', emoji: '🎮' },
+];
 ---
 
 <PortfolioLayout title={pageTitle} description={pageDescription}>
@@ -50,6 +58,18 @@ const blogSchema = {
                 <p class="section-subtitle" data-de="Projekte, Homelab-Setups und Lessons Learned" data-en="Projects, homelab setups and lessons learned">Projekte, Homelab-Setups und Lessons Learned</p>
             </div>
 
+            <!-- Kategorie-Filter -->
+            <div class="category-filter">
+                {categories.map((cat) => (
+                    <button 
+                        class={`filter-btn ${cat.id === 'all' ? 'active' : ''}`} 
+                        data-filter={cat.id}
+                    >
+                        {cat.label} {cat.emoji}
+                    </button>
+                ))}
+            </div>
+
             {posts.length === 0 && (
                 <div class="empty-state">
                     <p>Noch keine Posts – aber bald! 🚀</p>
@@ -57,30 +77,67 @@ const blogSchema = {
             )}
 
             <div class="posts-grid">
-                {posts.map((post) => (
-                    <a href={`/blog/${post.slug}`} class="post-card">
-                        <div class="post-card-meta">
-                            <time datetime={post.data.date.toISOString()}>
-                                {post.data.date.toLocaleDateString('de-DE', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </time>
-                        </div>
-                        <h2 class="post-card-title">{post.data.title}</h2>
-                        <p class="post-card-desc">{post.data.description}</p>
-                        <div class="post-card-tags">
-                            {post.data.tags.map((tag: string) => (
-                                <span class="post-card-tag">{tag}</span>
-                            ))}
-                        </div>
-                    </a>
-                ))}
+                {posts.map((post) => {
+                    // Kategorie bestimmen (Fallback auf "Website" wenn nicht gesetzt)
+                    const category = post.data.category || 'Website';
+                    return (
+                        <a 
+                            href={`/blog/${post.slug}`} 
+                            class="post-card" 
+                            data-category={category}
+                        >
+                            <div class="post-card-meta">
+                                <time datetime={post.data.date.toISOString()}>
+                                    {post.data.date.toLocaleDateString('de-DE', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })}
+                                </time>
+                                <span class="post-card-category">{category}</span>
+                            </div>
+                            <h2 class="post-card-title">{post.data.title}</h2>
+                            <p class="post-card-desc">{post.data.description}</p>
+                            <div class="post-card-tags">
+                                {post.data.tags.map((tag: string) => (
+                                    <span class="post-card-tag">{tag}</span>
+                                ))}
+                            </div>
+                        </a>
+                    );
+                })}
             </div>
         </div>
     </section>
 </PortfolioLayout>
+
+<script>
+    // Kategorie-Filter Logik
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const postCards = document.querySelectorAll('.post-card');
+
+        filterButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+                
+                // Aktiven Button aktualisieren
+                filterButtons.forEach((btn) => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Posts filtern
+                postCards.forEach((card) => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <style>
     .blog-listing {
@@ -92,6 +149,40 @@ const blogSchema = {
         padding: 4rem 2rem;
         color: #6b6b7b;
         font-size: 1.2rem;
+    }
+
+    /* Kategorie-Filter Styles */
+    .category-filter {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1.25rem;
+        background: rgba(26, 26, 37, 0.4);
+        border: 1px solid rgba(0, 217, 255, 0.3);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #a0a0a0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .filter-btn:hover {
+        background: rgba(0, 217, 255, 0.1);
+        border-color: rgba(0, 217, 255, 0.5);
+        color: #00d9ff;
+    }
+
+    .filter-btn.active {
+        background: rgba(0, 217, 255, 0.15);
+        border-color: #00d9ff;
+        color: #00d9ff;
+        box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
     }
 
     .posts-grid {
@@ -117,10 +208,33 @@ const blogSchema = {
         box-shadow: 0 0 40px rgba(0, 217, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
+    .post-card.hidden {
+        display: none;
+    }
+
+    .post-card-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+
     .post-card-meta time {
         color: #00d9ff;
         font-size: 0.8rem;
         font-family: 'JetBrains Mono', monospace;
+    }
+
+    .post-card-category {
+        padding: 0.2rem 0.6rem;
+        background: rgba(255, 107, 53, 0.15);
+        border: 1px solid rgba(255, 107, 53, 0.3);
+        border-radius: 20px;
+        font-size: 0.7rem;
+        color: #ff6b35;
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .post-card-title {
@@ -154,6 +268,27 @@ const blogSchema = {
     }
 
     @media (max-width: 768px) {
+        .category-filter {
+            gap: 0.5rem;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            padding-bottom: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .category-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
         .posts-grid {
             grid-template-columns: 1fr;
         }
