@@ -39,11 +39,11 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 ## 🔍 PHASE 3: SEO
 
-- [ ] Sitemap + robots.txt
-- [ ] Meta-Tags erweitern (Open Graph, Twitter, Canonical)
-- [ ] Structured Data JSON-LD (Person, BlogPosting)
+- [x] Sitemap + robots.txt
+- [x] Meta-Tags erweitern (Open Graph, Twitter, Canonical)
+- [x] Structured Data JSON-LD (Person, BlogPosting)
 
-**Status:** 🔄 In Arbeit
+**Status:** ✅ Live
 
 ---
 
@@ -58,12 +58,12 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 ## 🎨 PHASE 5: UX Polish
 
-- [ ] Light Theme komplett entfernen (nur Dark Side)
-- [ ] 404-Fehlerseite mit zufälligem Sarkasmus
-- [ ] "Zurück nach oben" Button
-- [ ] Code-Snippets/Syntax-Highlighting für Blog
+- [x] Light Theme komplett entfernen (nur Dark Side)
+- [x] 404-Fehlerseite mit zufälligem Sarkasmus
+- [x] "Zurück nach oben" Button
+- [x] Code-Snippets/Syntax-Highlighting für Blog
 
-**Status:** 🔄 In Arbeit
+**Status:** ✅ Live
 
 ---
 
@@ -100,7 +100,8 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 | Datum | Phase | Was gemacht |
 |-------|-------|-------------|
-| - | - | Noch nicht gestartet |
+| 14.02.2026 | 1-5 | Foundation, Core Features, SEO, Performance, UX Polish |
+| 14.02.2026 | Blog | 6 neue Posts, Kategorien, Bugfix View Transitions |
 
 ---
 

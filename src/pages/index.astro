@@ -157,6 +157,9 @@ const personSchema = {
                         <span class="terminal-prompt">$</span>
                         <span class="cursor">_</span>
                     </div>
+                    <div class="terminal-hint" style="margin-top: 1rem; font-size: 0.75rem; color: #6b6b7b; font-style: italic; opacity: 0.7;">
+                        *ob der konami code noch funktioniert?*
+                    </div>
                 </div>
             </div>
         </div>
@@ -320,7 +323,7 @@ const personSchema = {
             <div class="projects-grid">
                 <div class="project-card godot-card">
                     <div class="project-image">
-                        <span class="project-emoji">🏙️</span>
+                        <img src="/img/city_tycoon.jpg" alt="Idle City Tycoon" loading="lazy" class="project-screenshot">
                         <div class="project-overlay">
                             <span class="project-status-badge" data-de="In Entwicklung" data-en="In Development">In Entwicklung</span>
                         </div>
@@ -488,3 +491,87 @@ const personSchema = {
 
 <script is:inline src="/scripts/snake.js"></script>
 <script is:inline src="/scripts/term.js"></script>
+
+<!-- Konami Code Easter Egg -->
+<script is:inline>
+(function() {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+    let matrixActive = false;
+
+    document.addEventListener('keydown', function(e) {
+        if (matrixActive) return;
+        
+        if (e.key === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                activateMatrix();
+                konamiIndex = 0;
+            }
+        } else {
+            konamiIndex = 0;
+        }
+    });
+
+    function activateMatrix() {
+        matrixActive = true;
+        
+        // Matrix Canvas erstellen
+        const canvas = document.createElement('canvas');
+        canvas.id = 'matrix-canvas';
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+        document.body.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100;
+        }
+        
+        let frameCount = 0;
+        const maxFrames = 10 * 60; // 10 Sekunden bei 60fps
+        
+        function draw() {
+            if (frameCount >= maxFrames) {
+                canvas.remove();
+                matrixActive = false;
+                return;
+            }
+            
+            ctx.fillStyle = 'rgba(26, 26, 37, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            
+            frameCount++;
+            requestAnimationFrame(draw);
+        }
+        
+        draw();
+        
+        // Resize Handler
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }, { once: true });
+    }
+})();
+</script>
