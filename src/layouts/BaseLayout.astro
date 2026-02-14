@@ -3,6 +3,7 @@
 // Haupt-Layout für alle Seiten - ersetzt dupliziertes HTML/CSS
 
 import { siteConfig, getMetaDescription } from '@/config/site';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -37,9 +38,11 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
     
     <title>{title}</title>
     <link rel="icon" type="image/x-icon" href="/img/avatar.png">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
     <link href="/fonts/fonts.css" rel="stylesheet">
     <link rel="stylesheet" href="/styles/global.css">
     <slot name="head" />
+    <ViewTransitions />
 </head>
 <body>
     <slot />

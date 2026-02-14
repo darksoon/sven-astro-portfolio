@@ -22,16 +22,16 @@ const {
 
 <BaseLayout title={title} description={description} lang={lang}>
     <!-- Animated Background -->
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
+    <div class="bg-grid" transition:persist="bg-grid"></div>
+    <div class="bg-glow" transition:persist="bg-glow"></div>
 
-    <Nav />
+    <Nav transition:persist="nav" />
     
-    <main>
+    <main transition:animate="slide">
         <slot />
     </main>
 
-    <Footer />
+    <Footer transition:persist="footer" />
 
     <script is:inline src="/scripts/main.js"></script>
 </BaseLayout>

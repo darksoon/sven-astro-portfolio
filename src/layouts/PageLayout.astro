@@ -31,7 +31,7 @@ const t = {
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
-    <div class="page-container">
+    <div class="page-container" transition:animate="fade">
         <a href="/" class="back-link">{t.backToHome[lang]}</a>
         
         <slot />

@@ -7,10 +7,10 @@ import { siteConfig, getPageTitle, getMetaDescription } from '@/config/site';
 import PortfolioLayout from '../layouts/PortfolioLayout.astro';
 
 // Alle Blog-Posts laden, Drafts filtern und nach Datum sortieren
-const allPosts = await getCollection('blog');
-const posts = allPosts
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+});
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const pageTitle = getPageTitle(siteConfig.blog.title.de, 'de');
 const pageDescription = siteConfig.blog.description.de;

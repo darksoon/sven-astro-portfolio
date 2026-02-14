@@ -7,8 +7,12 @@ import type { CollectionEntry } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPost.astro';
 
 // Generiere alle statischen Pfade für Blog-Posts
+// In Production: Drafts werden gefiltert (404)
+// In Development: Alle Posts sind sichtbar
 export async function getStaticPaths() {
-    const posts = await getCollection('blog');
+    const posts = await getCollection('blog', ({ data }) => {
+        return import.meta.env.PROD ? data.draft !== true : true;
+    });
     return posts.map((post) => ({
         params: { slug: post.slug },
         props: { post },

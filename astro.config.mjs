@@ -3,4 +3,8 @@ import { siteConfig } from './src/config/site.ts';
 
 export default defineConfig({
   site: siteConfig.url,
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
 });

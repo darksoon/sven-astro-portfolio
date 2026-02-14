@@ -33,7 +33,7 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 - [ ] RSS Feed generieren
 - [ ] Drafts System (für unfertige Posts)
 
-**Status:** ⏳ Wartet auf Phase 1
+**Status:** 🔄 In Arbeit
 
 ---
 

@@ -6,7 +6,7 @@ import { siteConfig } from '@/config/site';
 const { copyright } = siteConfig;
 ---
 
-<footer class="footer">
+<footer class="footer" transition:persist="footer">
     <div class="container">
         <div class="footer-content">
             <p class="footer-text" data-de={`© ${copyright.year} ${copyright.holder}. ${copyright.tagline.de}`} data-en={`© ${copyright.year} ${copyright.holder}. ${copyright.tagline.en}`}>

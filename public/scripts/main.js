@@ -1,4 +1,5 @@
 // Portfolio-Seite: Background FX, Scroll Animations, Card Tilt
+// Optimiert für Astro View Transitions
 
 const BackgroundFX = {
   init() {
@@ -34,27 +35,37 @@ const ScrollAnimations = {
 const CardTilt = {
   init() {
     document.querySelectorAll('.godot-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+      // Entferne alte Listener um Duplikate zu vermeiden
+      const newCard = card.cloneNode(true);
+      card.parentNode.replaceChild(newCard, card);
+      
+      newCard.addEventListener('mousemove', (e) => {
+        const rect = newCard.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         const rotateX = (y - centerY) / 10;
         const rotateY = (centerX - x) / 10;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        newCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
       });
       
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      newCard.addEventListener('mouseleave', () => {
+        newCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
       });
     });
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+function initPortfolio() {
   BackgroundFX.init();
   ScrollAnimations.init();
   CardTilt.init();
   console.log('✨ Portfolio initialized');
-});
+}
+
+// Initialisierung bei normalem Seitenladen
+document.addEventListener('DOMContentLoaded', initPortfolio);
+
+// Re-Initialisierung bei Astro View Transitions
+document.addEventListener('astro:page-load', initPortfolio);

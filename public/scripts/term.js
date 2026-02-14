@@ -1,4 +1,5 @@
 // Live Homelab Stats - fetcht stats.json und aktualisiert Terminal-Widget
+// Optimiert für Astro View Transitions
 const LiveStats = {
   statsUrl: '/manifest.json',
   
@@ -76,4 +77,8 @@ const LiveStats = {
   }
 };
 
+// Initialisierung bei normalem Seitenladen
 document.addEventListener('DOMContentLoaded', () => LiveStats.init());
+
+// Re-Initialisierung bei Astro View Transitions
+document.addEventListener('astro:page-load', () => LiveStats.init());
