@@ -4,7 +4,6 @@ description: "Mein Versuch, SEO für ein Entwickler-Portfolio zu verstehen – o
 date: 2026-02-14
 tags: ["SEO", "Astro", "Meta-Tags", "Google"]
 category: Website
-draft: true
 ---
 
 ## Disclaimer: Ich bin kein SEO-Experte

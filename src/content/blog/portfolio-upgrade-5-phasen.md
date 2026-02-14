@@ -4,7 +4,6 @@ description: "Wie ich meine Astro-Website in fünf Phasen aufgeräumt habe – m
 date: 2026-02-14
 tags: ["Astro", "Refactoring", "Webentwicklung", "SEO"]
 category: Website
-draft: true
 ---
 
 ## Ausgangslage: Es funktioniert, aber...

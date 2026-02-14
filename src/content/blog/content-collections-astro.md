@@ -4,7 +4,6 @@ description: "Wie ich von Astro.glob() zu Content Collections gewechselt bin –
 date: 2026-02-14
 tags: ["Astro", "TypeScript", "Content Collections", "Blog"]
 category: Website
-draft: true
 ---
 
 ## Das Problem mit Astro.glob()
