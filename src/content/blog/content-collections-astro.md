@@ -1,7 +1,7 @@
 ---
 title: "Content Collections in Astro: Mein Weg zu typsicheren Blog-Posts"
 description: "Wie ich von Astro.glob() zu Content Collections gewechselt bin – und warum mir Zod-Validierung das Leben erleichtert."
-date: 2026-02-14
+date: 2026-02-10
 tags: ["Astro", "TypeScript", "Content Collections", "Blog"]
 category: Website
 ---

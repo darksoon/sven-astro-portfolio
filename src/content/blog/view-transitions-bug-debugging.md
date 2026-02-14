@@ -1,7 +1,7 @@
 ---
 title: "Wenn der Klick nicht klickt: Debugging View Transitions in Astro"
 description: "Meine Kategorie-Filter funktionierten nur nach einem Reload. Der Grund: Ich hatte DOMContentLoaded vergessen. Oder besser: Ich wusste nicht, dass View Transitions ein eigenes Event haben."
-date: 2026-02-14
+date: 2026-02-15
 tags: ["Astro", "JavaScript", "Bugfixing", "View Transitions"]
 category: Website
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Von statischem HTML zu Astro"
 description: "Warum ich mein Portfolio von reinem HTML/CSS/JS auf Astro umgestellt habe – und was das für Blog und Projekte bedeutet."
-date: 2026-02-13
+date: 2026-02-01
 tags: ["Astro", "Webentwicklung", "Portfolio"]
 category: Website
 ---

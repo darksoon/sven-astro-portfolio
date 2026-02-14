@@ -1,7 +1,7 @@
 ---
 title: "Ich bin Nerd und stehe dazu: Wie ich den Konami Code in mein Portfolio baute"
 description: "Warum ich einen 30 Jahre alten Cheat Code in meine Website eingebaut habe – und wie ich dabei Canvas, Key Events und meine Kindheit wiederentdeckte."
-date: 2026-02-14
+date: 2026-02-15
 tags: ["JavaScript", "Easter Egg", "Konami Code", "Canvas"]
 category: Website
 ---

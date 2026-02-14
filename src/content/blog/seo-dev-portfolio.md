@@ -1,7 +1,7 @@
 ---
 title: "SEO für Dev-Portfolios: Was ich beim Rumprobieren gelernt habe"
 description: "Mein Versuch, SEO für ein Entwickler-Portfolio zu verstehen – ohne Marketing-Bullshit, dafür mit Sitemaps, Open Graph und der Erkenntnis, dass Google nicht mag, wenn man 'stats' im Dateinamen hat."
-date: 2026-02-14
+date: 2026-02-13
 tags: ["SEO", "Astro", "Meta-Tags", "Google"]
 category: Website
 ---

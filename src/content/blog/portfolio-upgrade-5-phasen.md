@@ -1,7 +1,7 @@
 ---
 title: "Mein Portfolio-Upgrade: Von chaotic gut zu strukturiert besser"
 description: "Wie ich meine Astro-Website in fünf Phasen aufgeräumt habe – mit Import-Aliases, SEO und einer Menge 'Hätte ich das nicht früher machen können?'"
-date: 2026-02-14
+date: 2026-02-12
 tags: ["Astro", "Refactoring", "Webentwicklung", "SEO"]
 category: Website
 ---
