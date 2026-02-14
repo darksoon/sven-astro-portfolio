@@ -1,1 +1,373 @@
-!function(){const t=28,e=document.getElementById("snakeCanvas");if(!e)return;const o=e.getContext("2d"),l=document.getElementById("score"),n=document.getElementById("hiScore"),i=document.getElementById("lenVal"),f=document.getElementById("tickVal"),a=document.getElementById("sysInfo"),s=document.getElementById("crtScreen"),c=document.getElementById("deathOverlay");let r,y,h,x,d,u,m=0,g=0,M=[],w=[];function v(){const o=e.parentElement.clientWidth;e.width=o,e.height=o,d=o/t}function B(){v();const t=Math.floor(14);r=[{x:t,y:t},{x:t-1,y:t},{x:t-2,y:t}],y={x:1,y:0},x=0,g=0,M=[],w=[],l.textContent="0",i.textContent="3",f.textContent="0",c.classList.remove("active"),b()}function b(){let e;do{e={x:Math.floor(Math.random()*t),y:Math.floor(Math.random()*t)}}while(r.some(t=>t.x===e.x&&t.y===e.y));h=e}function R(){const e=r[0],o=[{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}];function l(e,l){const n=new Set,i=[{x:e,y:l}];n.add(`${e},${l}`);let f=0;const a=Math.floor(392);for(;i.length&&f<a;){const e=i.shift();f++;for(const l of o){const o=e.x+l.x,f=e.y+l.y,a=`${o},${f}`;o>=0&&o<t&&f>=0&&f<t&&!n.has(a)&&!r.some((t,e)=>e<r.length-1&&t.x===o&&t.y===f)&&(n.add(a),i.push({x:o,y:f}))}}return f}const n=o.filter(t=>!(t.x===-y.x&&t.y===-y.y)).filter(o=>function(o){const l=e.x+o.x,n=e.y+o.y;if(l<0||l>=t||n<0||n>=t)return!1;for(let t=0;t<r.length-1;t++)if(r[t].x===l&&r[t].y===n)return!1;return!0}(o));if(!n.length)return y;let i=n[0],f=-1/0;for(const t of n){const o=e.x+t.x,n=e.y+t.y,a=Math.abs(o-h.x)+Math.abs(n-h.y),s=l(o,n),c=s>=r.length+2?1e3-a:s;c>f&&(f=c,i=t)}return i}function $(t,e,o,l=10){for(let n=0;n<l;n++){const l=Math.random()*Math.PI*2,n=1+3*Math.random();M.push({x:(t+.5)*d,y:(e+.5)*d,vx:Math.cos(l)*n,vy:Math.sin(l)*n,life:1,size:1+3*Math.random(),color:o})}}function C(){y=R();const e={x:r[0].x+y.x,y:r[0].y+y.y};if(g++,f.textContent=g,e.x<0||e.x>=t||e.y<0||e.y>=t||r.some(t=>t.x===e.x&&t.y===e.y))!function(){clearInterval(u),s.classList.add("glitch"),c.classList.add("active"),setTimeout(()=>s.classList.remove("glitch"),300);for(const t of r)Math.random()<.5&&$(t.x,t.y,"#ff00aa",4);setTimeout(()=>{B(),S()},1800)}();else if(w.push({x:r[0].x,y:r[0].y,life:1}),r.unshift(e),e.x===h.x&&e.y===h.y?(x+=10,l.textContent=x,x>m&&(m=x,n.textContent=m),i.textContent=r.length,$(h.x,h.y,"#00ff88",12),$(h.x,h.y,"#00d9ff",6),b()):r.pop(),g%20==0){const t=7700+Math.floor(100*Math.random()),e=(12+8*Math.random()).toFixed(1);a.textContent=`PID:${t} MEM:${e}MB`}}function I(){o.clearRect(0,0,e.width,e.height),o.strokeStyle="rgba(0, 255, 136, 0.025)",o.lineWidth=.5;for(let l=0;l<=t;l++)o.beginPath(),o.moveTo(l*d,0),o.lineTo(l*d,e.height),o.stroke(),o.beginPath(),o.moveTo(0,l*d),o.lineTo(e.width,l*d),o.stroke();for(let t=w.length-1;t>=0;t--){const e=w[t];e.life-=.025,e.life<=0?w.splice(t,1):(o.fillStyle=`rgba(0, 255, 136, ${.08*e.life})`,o.fillRect(e.x*d,e.y*d,d,d))}for(let t=r.length-1;t>=0;t--){const e=r[t],l=1-t/r.length,n=1;if(0===t)o.fillStyle="#00ffcc",o.shadowColor="#00d9ff",o.shadowBlur=14;else{const t=Math.floor(10*l),e=Math.floor(120+135*l),n=Math.floor(60+40*l);o.fillStyle=`rgb(${t}, ${e}, ${n})`,o.shadowColor=`rgba(0, 255, 136, ${.05+.2*l})`,o.shadowBlur=6}if(o.fillRect(e.x*d+n,e.y*d+n,d-2*n,d-2*n),0===t){o.shadowBlur=0,o.fillStyle="rgba(0, 0, 0, 0.3)";const t=Math.max(2,.22*d);1===y.x?(o.fillRect(e.x*d+.6*d,e.y*d+.2*d,t,t),o.fillRect(e.x*d+.6*d,e.y*d+.62*d,t,t)):-1===y.x?(o.fillRect(e.x*d+.18*d,e.y*d+.2*d,t,t),o.fillRect(e.x*d+.18*d,e.y*d+.62*d,t,t)):-1===y.y?(o.fillRect(e.x*d+.2*d,e.y*d+.18*d,t,t),o.fillRect(e.x*d+.62*d,e.y*d+.18*d,t,t)):(o.fillRect(e.x*d+.2*d,e.y*d+.6*d,t,t),o.fillRect(e.x*d+.62*d,e.y*d+.6*d,t,t))}}o.shadowBlur=0;const l=.7+.3*Math.sin(.006*Date.now());o.fillStyle=`rgba(255, 0, 170, ${.15*l})`,o.fillRect(h.x*d-2,h.y*d-2,d+4,d+4),o.fillStyle=`rgba(255, 0, 170, ${l})`,o.shadowColor="#ff00aa",o.shadowBlur=16,o.fillRect(h.x*d+2,h.y*d+2,d-4,d-4),o.fillStyle=`rgba(255, 150, 220, ${.5*l})`,o.shadowBlur=0;const n=.3*d;o.fillRect(h.x*d+n,h.y*d+n,d-2*n,d-2*n),o.strokeStyle=`rgba(255, 0, 170, ${.3*l})`,o.lineWidth=.5;const i=h.x*d+d/2,f=h.y*d+d/2;o.beginPath(),o.moveTo(i,h.y*d-4),o.lineTo(i,h.y*d+d+4),o.moveTo(h.x*d-4,f),o.lineTo(h.x*d+d+4,f),o.stroke(),function(){for(let t=M.length-1;t>=0;t--){const e=M[t];e.x+=e.vx,e.y+=e.vy,e.vx*=.96,e.vy*=.96,e.life-=.03,e.life<=0&&M.splice(t,1)}}(),function(){for(const t of M)o.globalAlpha=.8*t.life,o.fillStyle=t.color,o.shadowColor=t.color,o.shadowBlur=8,o.fillRect(t.x-t.size/2,t.y-t.size/2,t.size,t.size);o.globalAlpha=1,o.shadowBlur=0}()}function S(){u=setInterval(C,70)}window.addEventListener("resize",v),B(),S(),function t(){I(),requestAnimationFrame(t)}()}();
+// AI Snake Game mit BFS Pathfinding
+// Autoplaying Snake für das Portfolio-Widget
+
+(function() {
+    'use strict';
+    
+    // Konfiguration
+    const GRID_SIZE = 28;
+    const TICK_RATE = 120; // ms
+    
+    // DOM Elemente
+    const canvas = document.getElementById('snakeCanvas');
+    if (!canvas) return; // Nicht auf dieser Seite
+    
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const hiScoreEl = document.getElementById('hiScore');
+    const lenEl = document.getElementById('lenVal');
+    const tickEl = document.getElementById('tickVal');
+    const sysInfoEl = document.getElementById('sysInfo');
+    const crtScreen = document.getElementById('crtScreen');
+    const deathOverlay = document.getElementById('deathOverlay');
+    
+    // Spielzustand
+    let snake = [];
+    let food = {};
+    let direction = { x: 1, y: 0 };
+    let nextDirection = { x: 1, y: 0 };
+    let cellSize = 0;
+    let gameLoop = null;
+    let tickCount = 0;
+    let hiScore = 0;
+    let particles = [];
+    let trail = [];
+    
+    // Canvas Größe anpassen
+    function resize() {
+        const container = canvas.parentElement;
+        const size = container.clientWidth;
+        canvas.width = size;
+        canvas.height = size;
+        cellSize = size / GRID_SIZE;
+    }
+    
+    // Spiel initialisieren
+    function initGame() {
+        resize();
+        
+        // Snake in der Mitte starten
+        const startX = Math.floor(GRID_SIZE / 2);
+        const startY = Math.floor(GRID_SIZE / 2);
+        snake = [
+            { x: startX, y: startY },
+            { x: startX - 1, y: startY },
+            { x: startX - 2, y: startY }
+        ];
+        
+        direction = { x: 1, y: 0 };
+        nextDirection = { x: 1, y: 0 };
+        tickCount = 0;
+        particles = [];
+        trail = [];
+        
+        scoreEl.textContent = '0';
+        lenEl.textContent = snake.length;
+        tickEl.textContent = '0';
+        deathOverlay.classList.remove('active');
+        crtScreen.classList.remove('glitch');
+        
+        spawnFood();
+        
+        // Alten Loop stoppen wenn vorhanden
+        if (gameLoop) clearInterval(gameLoop);
+        gameLoop = setInterval(gameStep, TICK_RATE);
+    }
+    
+    // Essen spawnen
+    function spawnFood() {
+        let newFood;
+        do {
+            newFood = {
+                x: Math.floor(Math.random() * GRID_SIZE),
+                y: Math.floor(Math.random() * GRID_SIZE)
+            };
+        } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+        
+        food = newFood;
+    }
+    
+    // BFS Pathfinding für AI
+    function findPath() {
+        const head = snake[0];
+        const directions = [
+            { x: 0, y: -1 }, // Up
+            { x: 0, y: 1 },  // Down
+            { x: -1, y: 0 }, // Left
+            { x: 1, y: 0 }   // Right
+        ];
+        
+        // Sichere Richtungen finden (nicht in Wand oder Schlange)
+        const safeDirections = directions.filter(dir => {
+            // Nicht rückwärts
+            if (dir.x === -direction.x && dir.y === -direction.y) return false;
+            
+            const newX = head.x + dir.x;
+            const newY = head.y + dir.y;
+            
+            // Wand check
+            if (newX < 0 || newX >= GRID_SIZE || newY < 0 || newY >= GRID_SIZE) return false;
+            
+            // Eigener Körper check (außer Schwanz, der sich bewegt)
+            for (let i = 0; i < snake.length - 1; i++) {
+                if (snake[i].x === newX && snake[i].y === newY) return false;
+            }
+            
+            return true;
+        });
+        
+        if (safeDirections.length === 0) return direction; // Keine sichere Richtung
+        
+        // BFS für kürzesten Weg zum Essen
+        let bestDir = safeDirections[0];
+        let bestScore = -Infinity;
+        
+        for (const dir of safeDirections) {
+            const newX = head.x + dir.x;
+            const newY = head.y + dir.y;
+            
+            // Manhattan Distanz zum Essen
+            const distToFood = Math.abs(newX - food.x) + Math.abs(newY - food.y);
+            
+            // BFS für verfügbaren Platz (Flood Fill)
+            const openSpace = floodFill(newX, newY);
+            
+            // Score berechnen
+            // Priorität: Nah am Essen, aber nur wenn genug Platz
+            const spaceBonus = openSpace >= snake.length + 2 ? 1000 : 0;
+            const score = spaceBonus - distToFood;
+            
+            if (score > bestScore) {
+                bestScore = score;
+                bestDir = dir;
+            }
+        }
+        
+        return bestDir;
+    }
+    
+    // Flood Fill für verfügbaren Platz
+    function floodFill(startX, startY) {
+        const visited = new Set();
+        const queue = [{ x: startX, y: startY }];
+        visited.add(`${startX},${startY}`);
+        
+        let count = 0;
+        const maxCheck = 400; // Limit für Performance
+        
+        while (queue.length > 0 && count < maxCheck) {
+            const { x, y } = queue.shift();
+            count++;
+            
+            const dirs = [{ x: 0, y: -1 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 1, y: 0 }];
+            for (const dir of dirs) {
+                const nx = x + dir.x;
+                const ny = y + dir.y;
+                const key = `${nx},${ny}`;
+                
+                if (nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE && 
+                    !visited.has(key) && 
+                    !snake.some((seg, i) => i < snake.length - 1 && seg.x === nx && seg.y === ny)) {
+                    visited.add(key);
+                    queue.push({ x: nx, y: ny });
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    // Spiel-Schritt
+    function gameStep() {
+        // AI Richtung berechnen
+        nextDirection = findPath();
+        direction = nextDirection;
+        
+        // Neue Kopfposition
+        const head = snake[0];
+        const newHead = {
+            x: head.x + direction.x,
+            y: head.y + direction.y
+        };
+        
+        tickCount++;
+        tickEl.textContent = tickCount;
+        
+        // Kollision mit Wand
+        if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
+            gameOver();
+            return;
+        }
+        
+        // Kollision mit sich selbst
+        if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+            gameOver();
+            return;
+        }
+        
+        // Schlange bewegen
+        snake.unshift(newHead);
+        
+        // Trail für Visual Effect
+        trail.push({ x: newHead.x, y: newHead.y, life: 1.0 });
+        if (trail.length > 20) trail.shift();
+        
+        // Essen gefressen?
+        if (newHead.x === food.x && newHead.y === food.y) {
+            // Partikel-Effekt
+            createParticles(food.x, food.y, '#00d9ff');
+            
+            // Score aktualisieren
+            const score = parseInt(scoreEl.textContent) + 10;
+            scoreEl.textContent = score;
+            if (score > hiScore) {
+                hiScore = score;
+                hiScoreEl.textContent = hiScore;
+            }
+            
+            lenEl.textContent = snake.length;
+            
+            // Neues Essen
+            spawnFood();
+        } else {
+            // Schwanz entfernen wenn kein Essen
+            snake.pop();
+        }
+        
+        // Zeichnen
+        draw();
+    }
+    
+    // Partikel erstellen
+    function createParticles(gx, gy, color, count = 10) {
+        const cx = (gx + 0.5) * cellSize;
+        const cy = (gy + 0.5) * cellSize;
+        
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1 + Math.random() * 3;
+            particles.push({
+                x: cx,
+                y: cy,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life: 1,
+                size: 1 + Math.random() * 3,
+                color: color
+            });
+        }
+    }
+    
+    // Zeichnen
+    function draw() {
+        // Clear
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Trail zeichnen
+        trail.forEach(t => {
+            t.life -= 0.05;
+            if (t.life > 0) {
+                ctx.fillStyle = `rgba(0, 217, 255, ${t.life * 0.3})`;
+                ctx.fillRect(t.x * cellSize, t.y * cellSize, cellSize, cellSize);
+            }
+        });
+        trail = trail.filter(t => t.life > 0);
+        
+        // Gitter (subtil)
+        ctx.strokeStyle = 'rgba(0, 217, 255, 0.05)';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i <= GRID_SIZE; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * cellSize, 0);
+            ctx.lineTo(i * cellSize, canvas.height);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, i * cellSize);
+            ctx.lineTo(canvas.width, i * cellSize);
+            ctx.stroke();
+        }
+        
+        // Schlange zeichnen
+        snake.forEach((segment, i) => {
+            const x = segment.x * cellSize;
+            const y = segment.y * cellSize;
+            
+            if (i === 0) {
+                // Kopf
+                ctx.fillStyle = '#ff3366';
+                ctx.shadowColor = '#ff3366';
+                ctx.shadowBlur = 10;
+            } else {
+                // Körper
+                const alpha = 1 - (i / snake.length) * 0.5;
+                ctx.fillStyle = `rgba(0, 217, 255, ${alpha})`;
+                ctx.shadowColor = '#00d9ff';
+                ctx.shadowBlur = 5;
+            }
+            
+            ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+            ctx.shadowBlur = 0;
+        });
+        
+        // Essen zeichnen
+        const fx = food.x * cellSize;
+        const fy = food.y * cellSize;
+        ctx.fillStyle = '#00ff41';
+        ctx.shadowColor = '#00ff41';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.arc(fx + cellSize/2, fy + cellSize/2, cellSize/2 - 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Partikel zeichnen
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.02;
+            p.vx *= 0.98;
+            p.vy *= 0.98;
+            
+            if (p.life > 0) {
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        });
+        particles = particles.filter(p => p.life > 0);
+        
+        // Scanline-Effekt
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        for (let i = 0; i < canvas.height; i += 4) {
+            ctx.fillRect(0, i, canvas.width, 2);
+        }
+    }
+    
+    // Game Over
+    function gameOver() {
+        clearInterval(gameLoop);
+        crtScreen.classList.add('glitch');
+        deathOverlay.classList.add('active');
+        
+        // Nach 3 Sekunden neu starten
+        setTimeout(() => {
+            crtScreen.classList.remove('glitch');
+            deathOverlay.classList.remove('active');
+            initGame();
+        }, 3000);
+    }
+    
+    // Window Resize Handler
+    window.addEventListener('resize', resize);
+    
+    // Initialisierung
+    initGame();
+    
+    // Expose reset function for View Transitions
+    window.snakeReset = initGame;
+    
+})();
