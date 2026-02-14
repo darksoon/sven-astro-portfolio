@@ -17,6 +17,18 @@ const blogCollection = defineCollection({
     }),
 });
 
+// Changelog Collection (manuell gepflegt)
+const changelogCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        date: z.date(),
+        version: z.string().optional(),
+        category: z.enum(['Feature', 'Fix', 'Refactor', 'Docs', 'Info']).default('Feature'),
+    }),
+});
+
 export const collections = {
     blog: blogCollection,
+    changelog: changelogCollection,
 };
