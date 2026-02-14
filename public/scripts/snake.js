@@ -1,8 +1,11 @@
-// ============================================
-// SNAKE GAME - CRT TERMINAL EDITION
-// ============================================
+/*!
+ * AI Snake Game - CRT Terminal Edition
+ * Autoplaying Snake with BFS pathfinding
+ */
 
 (function() {
+  'use strict';
+  
   const GRID = 28;
   const SPEED = 70;
   const RESTART_DELAY = 1800;
@@ -22,6 +25,7 @@
   let snake, dir, food, score, hiScore = 0, cell, loop, ticks = 0;
   let particles = [];
   let trail = [];
+  let isRunning = false;
   
   function resize() {
     const w = canvas.parentElement.clientWidth;
@@ -31,6 +35,13 @@
   }
   
   function init() {
+    // Stop existing loop
+    if (loop) {
+      clearInterval(loop);
+      loop = null;
+    }
+    isRunning = false;
+    
     resize();
     const mid = Math.floor(GRID / 2);
     snake = [
@@ -47,83 +58,95 @@
     lenEl.textContent = '3';
     tickEl.textContent = '0';
     deathOverlay.classList.remove('active');
+    crtScreen.classList.remove('glitch');
     placeFood();
   }
   
   function placeFood() {
-    let p;
+    let newFood;
     do {
-      p = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID) };
-    } while (snake.some(s => s.x === p.x && s.y === p.y));
-    food = p;
+      newFood = {
+        x: Math.floor(Math.random() * GRID),
+        y: Math.floor(Math.random() * GRID)
+      };
+    } while (snake.some(s => s.x === newFood.x && s.y === newFood.y));
+    food = newFood;
   }
   
-  // AI
+  // BFS pathfinding
   function ai() {
-    const h = snake[0];
-    const moves = [{ x: 0, y: -1 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 1, y: 0 }];
-    const valid = moves.filter(m => !(m.x === -dir.x && m.y === -dir.y));
+    const head = snake[0];
+    const dirs = [
+      { x: 0, y: -1 }, { x: 0, y: 1 },
+      { x: -1, y: 0 }, { x: 1, y: 0 }
+    ];
     
-    function safe(m) {
-      const nx = h.x + m.x, ny = h.y + m.y;
+    const safeDirs = dirs.filter(d => {
+      if (d.x === -dir.x && d.y === -dir.y) return false;
+      const nx = head.x + d.x, ny = head.y + d.y;
       if (nx < 0 || nx >= GRID || ny < 0 || ny >= GRID) return false;
-      for (let i = 0; i < snake.length - 1; i++) 
+      for (let i = 0; i < snake.length - 1; i++) {
         if (snake[i].x === nx && snake[i].y === ny) return false;
-      return true;
-    }
-    
-    function flood(sx, sy) {
-      const vis = new Set();
-      const q = [{ x: sx, y: sy }];
-      vis.add(`${sx},${sy}`);
-      let c = 0;
-      const max = Math.floor(GRID * GRID * 0.5);
-      while (q.length && c < max) {
-        const cur = q.shift();
-        c++;
-        for (const d of moves) {
-          const nx = cur.x + d.x, ny = cur.y + d.y;
-          const k = `${nx},${ny}`;
-          if (nx >= 0 && nx < GRID && ny >= 0 && ny < GRID && !vis.has(k) && 
-              !snake.some((s, i) => i < snake.length - 1 && s.x === nx && s.y === ny)) {
-            vis.add(k);
-            q.push({ x: nx, y: ny });
-          }
-        }
       }
-      return c;
-    }
+      return true;
+    });
     
-    const safeMoves = valid.filter(m => safe(m));
-    if (!safeMoves.length) return dir;
+    if (!safeDirs.length) return dir;
     
-    let best = safeMoves[0], bestSc = -Infinity;
-    for (const m of safeMoves) {
-      const nx = h.x + m.x, ny = h.y + m.y;
+    let bestDir = safeDirs[0];
+    let bestScore = -Infinity;
+    
+    for (const d of safeDirs) {
+      const nx = head.x + d.x, ny = head.y + d.y;
       const dist = Math.abs(nx - food.x) + Math.abs(ny - food.y);
       const space = flood(nx, ny);
-      const sc = space >= snake.length + 2 ? 1000 - dist : space;
-      if (sc > bestSc) {
-        bestSc = sc;
-        best = m;
+      const score = (space >= snake.length + 2 ? 1000 : 0) - dist;
+      if (score > bestScore) {
+        bestScore = score;
+        bestDir = d;
       }
     }
-    return best;
+    return bestDir;
   }
   
-  // Particles
-  function spawn(x, y, color, count = 10) {
+  function flood(sx, sy) {
+    const visited = new Set();
+    const q = [{ x: sx, y: sy }];
+    visited.add(`${sx},${sy}`);
+    let count = 0;
+    const maxCheck = 400;
+    
+    while (q.length && count < maxCheck) {
+      const { x, y } = q.shift();
+      count++;
+      const dirs = [{ x: 0, y: -1 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 1, y: 0 }];
+      for (const d of dirs) {
+        const nx = x + d.x, ny = y + d.y;
+        const key = `${nx},${ny}`;
+        if (nx >= 0 && nx < GRID && ny >= 0 && ny < GRID && 
+            !visited.has(key) && 
+            !snake.some((s, i) => i < snake.length - 1 && s.x === nx && s.y === ny)) {
+          visited.add(key);
+          q.push({ x: nx, y: ny });
+        }
+      }
+    }
+    return count;
+  }
+  
+  function spawn(gx, gy, color, count = 10) {
+    const cx = (gx + 0.5) * cell;
+    const cy = (gy + 0.5) * cell;
     for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 1 + Math.random() * 3;
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 1 + Math.random() * 3;
       particles.push({
-        x: (x + 0.5) * cell,
-        y: (y + 0.5) * cell,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
+        x: cx, y: cy,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd,
         life: 1,
         size: 1 + Math.random() * 3,
-        color
+        color: color
       });
     }
   }
@@ -133,9 +156,9 @@
       const p = particles[i];
       p.x += p.vx;
       p.y += p.vy;
-      p.vx *= 0.96;
-      p.vy *= 0.96;
-      p.life -= 0.03;
+      p.life -= 0.02;
+      p.vx *= 0.98;
+      p.vy *= 0.98;
       if (p.life <= 0) particles.splice(i, 1);
     }
   }
@@ -152,7 +175,6 @@
     ctx.shadowBlur = 0;
   }
   
-  // Update
   function update() {
     dir = ai();
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
@@ -191,7 +213,10 @@
   }
   
   function die() {
+    if (!isRunning) return;
+    isRunning = false;
     clearInterval(loop);
+    loop = null;
     crtScreen.classList.add('glitch');
     deathOverlay.classList.add('active');
     setTimeout(() => crtScreen.classList.remove('glitch'), 300);
@@ -199,12 +224,15 @@
       if (Math.random() < 0.5) spawn(s.x, s.y, '#ff00aa', 4);
     }
     setTimeout(() => {
+      deathOverlay.classList.remove('active');
       init();
-      start();
+      if (!loop) {
+        loop = setInterval(update, SPEED);
+        isRunning = true;
+      }
     }, RESTART_DELAY);
   }
   
-  // Draw
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -304,28 +332,29 @@
     drawParticles();
   }
   
-  function start() {
-    loop = setInterval(update, SPEED);
-  }
-  
   function render() {
     draw();
     requestAnimationFrame(render);
   }
   
   window.addEventListener('resize', resize);
+  
+  // Initialize
   init();
-  start();
+  loop = setInterval(update, SPEED);
+  isRunning = true;
   render();
   
-  // Expose reset function for View Transitions
-  window.snakeGame = { init, start, render };
+  // View Transition Support
+  document.addEventListener('astro:page-load', () => {
+    const c = document.getElementById('snakeCanvas');
+    if (c && !isRunning) {
+      init();
+      if (!loop) {
+        loop = setInterval(update, SPEED);
+        isRunning = true;
+      }
+    }
+  });
+  
 })();
-
-// View Transition Support
-document.addEventListener('astro:page-load', () => {
-  if (window.snakeGame && document.getElementById('snakeCanvas')) {
-    window.snakeGame.init();
-    window.snakeGame.start();
-  }
-});
