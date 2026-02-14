@@ -28,12 +28,12 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 ## 🚀 PHASE 2: Core Features
 
-- [ ] View Transitions (flüssige Seitenwechsel)
-- [ ] Prefetching (Seiten im Hintergrund laden)
-- [ ] RSS Feed generieren
-- [ ] Drafts System (für unfertige Posts)
+- [x] View Transitions (flüssige Seitenwechsel)
+- [x] Prefetching (Seiten im Hintergrund laden)
+- [x] RSS Feed generieren
+- [x] Drafts System (für unfertige Posts)
 
-**Status:** 🔄 In Arbeit
+**Status:** ✅ Live auf Vercel
 
 ---
 
@@ -43,7 +43,7 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 - [ ] Meta-Tags erweitern (Open Graph, Twitter, Canonical)
 - [ ] Structured Data JSON-LD (Person, BlogPosting)
 
-**Status:** ⏳ Wartet auf Phase 2
+**Status:** 🔄 In Arbeit
 
 ---
 

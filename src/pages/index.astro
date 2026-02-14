@@ -20,9 +20,37 @@ const sys = stats?.system;
 const pageTitle = siteConfig.title.de;
 const social = siteConfig.social;
 const author = siteConfig.author;
+
+// JSON-LD Person Schema für Google Rich Snippets
+const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: author.name,
+    url: siteConfig.url,
+    jobTitle: author.jobTitle.de,
+    sameAs: [
+        social.github.url,
+        social.discord.url,
+        social.itch.url,
+    ],
+    description: siteConfig.description.de,
+    email: `mailto:${social.email}`,
+    knowsAbout: [
+        'Linux System Administration',
+        'Docker & Containerization',
+        'Network Infrastructure',
+        'Game Development',
+        'Godot Engine',
+        'Web Development',
+        'Homelab Infrastructure',
+    ],
+};
 ---
 
 <PortfolioLayout title={pageTitle}>
+    <Fragment slot="head">
+        <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    </Fragment>
 
     <!-- Hero Section -->
     <section id="hero" class="hero">

@@ -3,6 +3,7 @@
 // Layout für einzelne Blog-Posts - wird für Content Collections verwendet
 
 import type { CollectionEntry } from 'astro:content';
+import { siteConfig } from '@/config/site';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -18,9 +19,39 @@ const formattedDate = date.toLocaleDateString('de-DE', {
     month: 'long',
     day: 'numeric'
 });
+
+// Post URL erstellen
+const postUrl = `${siteConfig.url}/blog/${post.slug}/`;
+
+// Datum im ISO-Format für Schema.org
+const isoDate = date.toISOString().split('T')[0];
+
+// JSON-LD BlogPosting Schema für Google Rich Snippets
+const blogPostingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description: description,
+    author: {
+        '@type': 'Person',
+        name: siteConfig.author.name,
+        url: siteConfig.url,
+    },
+    datePublished: isoDate,
+    dateModified: isoDate,
+    url: postUrl,
+    keywords: tags,
+    mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': postUrl,
+    },
+};
 ---
 
-<BaseLayout title={`${title} | Sven Neurath`} description={description}>
+<BaseLayout title={`${title} | Sven Neurath`} description={description} ogType="article" lang="de">
+    <Fragment slot="head">
+        <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+    </Fragment>
     <article class="blog-post" transition:animate="slide">
         <a href="/blog" class="back-link">← Alle Posts</a>
 

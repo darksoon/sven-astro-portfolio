@@ -21,6 +21,8 @@ const {
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
+    <slot name="head" slot="head" />
+    
     <!-- Animated Background -->
     <div class="bg-grid" transition:persist="bg-grid"></div>
     <div class="bg-glow" transition:persist="bg-glow"></div>

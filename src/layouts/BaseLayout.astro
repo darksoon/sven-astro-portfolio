@@ -9,15 +9,21 @@ interface Props {
   title: string;
   description?: string;
   lang?: 'de' | 'en';
+  ogType?: 'website' | 'article';
+  ogImage?: string;
 }
 
 const { 
   title, 
   description = getMetaDescription(undefined, Astro.props.lang || siteConfig.defaults.lang),
-  lang = siteConfig.defaults.lang 
+  lang = siteConfig.defaults.lang,
+  ogType = 'website',
+  ogImage = '/img/avatar.png'
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
+const ogImageUrl = new URL(ogImage, siteConfig.url).toString();
+const ogLocale = lang === 'de' ? 'de_DE' : 'en_US';
 ---
 
 <!DOCTYPE html>
@@ -25,22 +31,45 @@ const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
     <meta name="description" content={description}>
     <meta name="author" content={siteConfig.author.name}>
+    <meta name="robots" content="index, follow">
+    
+    <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl}>
     
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
-    <meta property="og:type" content="website">
+    <meta property="og:type" content={ogType}>
     <meta property="og:url" content={canonicalUrl}>
     <meta property="og:site_name" content={siteConfig.name[lang]}>
+    <meta property="og:locale" content={ogLocale}>
+    <meta property="og:image" content={ogImageUrl}>
+    <meta property="og:image:alt" content={title}>
     
-    <title>{title}</title>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={ogImageUrl}>
+    <meta name="twitter:image:alt" content={title}>
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/img/avatar.png">
+    
+    <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+    
+    <!-- Fonts -->
     <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="/styles/global.css">
+    
     <slot name="head" />
     <ViewTransitions />
 </head>
