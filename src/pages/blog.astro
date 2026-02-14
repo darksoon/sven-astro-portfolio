@@ -113,30 +113,41 @@ const categories = [
 
 <script>
     // Kategorie-Filter Logik
-    document.addEventListener('DOMContentLoaded', () => {
+    function initCategoryFilter() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         const postCards = document.querySelectorAll('.post-card');
 
         filterButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-                
-                // Aktiven Button aktualisieren
-                filterButtons.forEach((btn) => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                // Posts filtern
-                postCards.forEach((card) => {
-                    const category = card.getAttribute('data-category');
-                    if (filter === 'all' || category === filter) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
-                });
-            });
+            // Entferne alte Listener um Dopplungen zu vermeiden
+            button.removeEventListener('click', handleFilterClick);
+            button.addEventListener('click', handleFilterClick);
         });
-    });
+
+        function handleFilterClick(e) {
+            const button = e.currentTarget;
+            const filter = button.getAttribute('data-filter');
+            
+            // Aktiven Button aktualisieren
+            filterButtons.forEach((btn) => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Posts filtern
+            postCards.forEach((card) => {
+                const category = card.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    }
+
+    // Initial beim ersten Laden
+    document.addEventListener('DOMContentLoaded', initCategoryFilter);
+
+    // Bei jeder View Transition neu initialisieren (wichtig!)
+    document.addEventListener('astro:page-load', initCategoryFilter);
 </script>
 
 <style>
