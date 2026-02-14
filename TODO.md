@@ -89,6 +89,8 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 ## 📌 LATER
 
 - [ ] Tag-Filter für Blog
+- [ ] Apple Touch Icon (für "Zum Home-Bildschirm")
+- [ ] Web App Manifest (für "Installieren als App")
 
 **Status:** ⏳ Irgendwann mal
 
