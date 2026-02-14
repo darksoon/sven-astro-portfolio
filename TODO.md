@@ -52,7 +52,7 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 - [ ] Font Loading optimieren (font-display: swap)
 - [ ] Bildoptimierung (WebP, Lazy Loading, Base64 LQIP)
 
-**Status:** ⏳ Wartet auf Phase 3
+**Status:** 🔄 In Arbeit
 
 ---
 

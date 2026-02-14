@@ -79,6 +79,21 @@ const blogPostingSchema = {
     </article>
 </BaseLayout>
 
+<script is:inline>
+    // Lazy Loading für alle Blog-Post Bilder
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('.post-content img');
+        images.forEach(function(img) {
+            if (!img.hasAttribute('loading')) {
+                img.setAttribute('loading', 'lazy');
+            }
+            if (!img.hasAttribute('decoding')) {
+                img.setAttribute('decoding', 'async');
+            }
+        });
+    });
+</script>
+
 <style>
     .blog-post {
         max-width: 800px;
