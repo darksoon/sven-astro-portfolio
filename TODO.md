@@ -49,10 +49,10 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 ## ⚡ PHASE 4: Performance
 
-- [ ] Font Loading optimieren (font-display: swap)
-- [ ] Bildoptimierung (WebP, Lazy Loading, Base64 LQIP)
+- [x] Font Loading optimieren (font-display: swap)
+- [x] Bildoptimierung (Lazy Loading, fetchpriority)
 
-**Status:** 🔄 In Arbeit
+**Status:** ✅ Live - "fucking fast"
 
 ---
 
@@ -63,7 +63,7 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 - [ ] "Zurück nach oben" Button
 - [ ] Code-Snippets/Syntax-Highlighting für Blog
 
-**Status:** ⏳ Wartet auf Phase 4
+**Status:** 🔄 In Arbeit
 
 ---
 

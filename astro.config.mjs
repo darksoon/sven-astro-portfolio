@@ -7,4 +7,14 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: 'hover',
   },
+  markdown: {
+    shikiConfig: {
+      // Dracula Theme passt gut zum Dark Design der Seite
+      theme: 'dracula',
+      // Zeilen umbrechen, wenn nötig
+      wrap: true,
+      // Sprachen explizit laden für bessere Performance
+      langs: ['bash', 'yaml', 'json', 'javascript', 'typescript', 'python', 'dockerfile'],
+    },
+  },
 });

@@ -1,0 +1,101 @@
+---
+// src/components/BackToTop.astro
+// "Zurück nach oben" Button - erscheint nach Scrollen
+---
+
+<button id="backToTop" class="back-to-top" aria-label="Zurück nach oben">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m18 15-6-6-6 6"/>
+    </svg>
+</button>
+
+<style>
+    .back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: rgba(0, 217, 255, 0.2);
+        border: 1px solid #00d9ff;
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #00d9ff;
+        backdrop-filter: blur(8px);
+    }
+
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .back-to-top:hover {
+        background: rgba(0, 217, 255, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+    }
+
+    .back-to-top:active {
+        transform: translateY(-2px);
+    }
+
+    /* Mobile Anpassungen */
+    @media (max-width: 768px) {
+        .back-to-top {
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+</style>
+
+<script is:inline>
+    (function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        const scrollThreshold = 300;
+
+        // Zeige/verstecke Button basierend auf Scroll-Position
+        function toggleButton() {
+            const scrollY = window.scrollY || window.pageYOffset;
+            
+            if (scrollY > scrollThreshold) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }
+
+        // Smooth Scroll nach oben
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Event Listener
+        if (backToTopBtn) {
+            // Initial prüfen (falls Seite bereits gescrollt ist)
+            toggleButton();
+
+            // Scroll Event
+            window.addEventListener('scroll', toggleButton, { passive: true });
+
+            // Click Event
+            backToTopBtn.addEventListener('click', scrollToTop);
+        }
+    })();
+</script>

@@ -199,7 +199,8 @@ const blogPostingSchema = {
         border-color: #00d9ff;
     }
 
-    .post-content :global(code) {
+    /* Inline-Code (nicht in Code-Blöcken) */
+    .post-content :global(:not(pre) > code) {
         background: rgba(0, 217, 255, 0.1);
         padding: 0.15rem 0.4rem;
         border-radius: 4px;
@@ -208,8 +209,9 @@ const blogPostingSchema = {
         color: #00d9ff;
     }
 
+    /* Code-Blöcke - Basis-Styling */
     .post-content :global(pre) {
-        background: rgba(26, 26, 37, 0.8);
+        background: #282a36 !important; /* Dracula Hintergrund */
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 1.5rem;
@@ -217,11 +219,23 @@ const blogPostingSchema = {
         margin: 1.5rem 0;
     }
 
+    /* Shiki-spezifische Styling */
+    .post-content :global(pre.shiki) {
+        background: #282a36 !important;
+    }
+
     .post-content :global(pre code) {
-        background: none;
+        background: none !important;
         padding: 0;
-        font-size: 0.85rem;
-        color: #e0e0e0;
+        font-size: 0.9rem;
+        color: inherit;
+        font-family: 'JetBrains Mono', monospace;
+        line-height: 1.6;
+    }
+
+    /* Shiki Token-Farben bleiben erhalten */
+    .post-content :global(pre .line) {
+        display: block;
     }
 
     .post-content :global(blockquote) {

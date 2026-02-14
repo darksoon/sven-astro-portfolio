@@ -56,7 +56,6 @@ export interface SiteConfig {
   /** Standard-Einstellungen */
   defaults: {
     lang: 'de' | 'en';
-    theme: 'dark' | 'light';
   };
   /** Blog-Konfiguration */
   blog: {
@@ -126,7 +125,6 @@ export const siteConfig: SiteConfig = {
 
   defaults: {
     lang: 'de',
-    theme: 'dark',
   },
 
   blog: {

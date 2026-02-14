@@ -4,6 +4,7 @@
 
 import { siteConfig } from '@/config/site';
 import BaseLayout from './BaseLayout.astro';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
   title: string;
@@ -39,6 +40,7 @@ const t = {
         <footer class="page-footer">
             <p>{t.copyright[lang]}<a href="/">{t.footerHome[lang]}</a></p>
         </footer>
+        <BackToTop />
     </div>
 </BaseLayout>
 
