@@ -86,11 +86,26 @@ feat: Phase 1 Foundation - Import Aliases, Site-Config, Content Collections
 
 ---
 
+## 🔧 PHASE 6: Advanced (Next Level)
+
+- [ ] Erweiterte Homelab-Status-Seite (/status oder /homelab)
+  - Live-Graphen (CPU, RAM über Zeit)
+  - Container-Status als visuelle Grid-View
+  - Uptime-History
+  - Datenrate: Alle 15 Min (wie jetzt) oder 1x pro Stunde?
+- [ ] GameDev: Ladebalken für Idle City Tycoon (ca. 21% Fortschritt)
+- [ ] Timeline/Changelog auf der Seite (aus Git-History oder manuell)
+- [ ] Blog-Posts: Gleiches Layout wie Hauptseite (Nav + Footer + Background)
+  - Soll wie Single-Page wirken, nicht wie separate Seiten
+
+**Status:** ⏳ Brainstorming
+
 ## 📌 LATER
 
-- [ ] Tag-Filter für Blog
 - [ ] Apple Touch Icon (für "Zum Home-Bildschirm")
 - [ ] Web App Manifest (für "Installieren als App")
+- [ ] Kommentare (Giscus)
+- [ ] Newsletter
 
 **Status:** ⏳ Irgendwann mal
 
