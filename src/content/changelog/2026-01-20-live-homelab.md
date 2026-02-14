@@ -1,6 +1,6 @@
 ---
 title: "Homelab wird live: Echte Daten vom Server"
-date: 2024-02-10
+date: 2026-01-20
 version: "0.4.0"
 category: "Feature"
 ---

@@ -1,6 +1,6 @@
 ---
 title: "HTML/CSS Prototyp: Die Basis steht"
-date: 2024-02-05
+date: 2026-01-10
 version: "0.2.0"
 category: "Feature"
 ---

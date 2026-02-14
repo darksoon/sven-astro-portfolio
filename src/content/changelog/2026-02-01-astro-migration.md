@@ -1,6 +1,6 @@
 ---
 title: "Migration zu Astro: Der richtige Schritt"
-date: 2024-02-13
+date: 2026-02-01
 version: "1.0.0"
 category: "Refactor"
 ---

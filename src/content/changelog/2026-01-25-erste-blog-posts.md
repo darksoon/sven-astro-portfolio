@@ -1,6 +1,6 @@
 ---
 title: "Blog geht live: Erste Artikel veröffentlicht"
-date: 2024-02-12
+date: 2026-01-25
 version: "0.5.0"
 category: "Feature"
 ---

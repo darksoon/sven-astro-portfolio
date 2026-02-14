@@ -1,6 +1,6 @@
 ---
 title: "Die erste Idee: Ein Portfolio, das mehr kann"
-date: 2024-02-02
+date: 2025-05-15
 version: "0.1.0"
 category: "Info"
 ---

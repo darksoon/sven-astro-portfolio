@@ -1,6 +1,6 @@
 ---
 title: "Snake-Game: Erstes Easter Egg integriert"
-date: 2024-02-08
+date: 2026-01-15
 version: "0.3.0"
 category: "Feature"
 ---
